@@ -4,11 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FarmaPlus - Tu Farmacia de Confianza</title>
+    <!-- Enlace a la hoja de estilos CSS -->
     <link rel="stylesheet" href="stylefarma.css">
     <!-- Para llamar una biblioteca externa. Lucide es el nombre de la biblioteca de iconos. -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+    <!-- Contenedor principal de la aplicación. JavaScript renderizará el contenido aquí. -->
     <div id="root">
         <header class="site-header">
             <div class="top-bar">
@@ -31,7 +33,7 @@
                     </div>
                 </div>
             </div>
-
+  <!-- Cabecera principal con logo, barra de búsqueda y acciones -->
             <div class="main-header">
                 <div class="container">
                     <div class="main-header-content">
@@ -42,7 +44,7 @@
                                 <p class="logo-subtitle">Tu farmacia de confianza</p>
                             </div>
                         </a>
-
+                  <!-- Barra de búsqueda para escritorio -->
                         <div class="search-bar">
                             <i data-lucide="search" class="search-icon"></i>
                             <input type="text" placeholder="Buscar medicamentos, productos..." class="search-input" />
@@ -65,7 +67,7 @@
                             </button>
                         </div>
                     </div>
-
+         <!-- Navegación para escritorio -->
                     <nav class="nav-desktop">
                         <a href="#" data-page="inicio" class="nav-link active">Inicio</a>
                         <a href="#" data-page="catalogo" class="nav-link">Catálogo</a>
@@ -74,6 +76,8 @@
                     </nav>
                 </div>
             </div>
+
+             <!-- Menú de navegación para dispositivos móviles (inicialmente oculto) -->
              <nav class="nav-mobile" id="mobile-menu" style="display: none;">
                 <a href="#" data-page="inicio" class="nav-link active">Inicio</a>
                 <a href="#" data-page="catalogo" class="nav-link">Catálogo</a>
@@ -84,9 +88,11 @@
                 <a href="#" data-page="registro" class="nav-link">Registrarse</a>
             </nav>
         </header>
-
+<!-- Contenido principal de la página. Se carga dinámicamente con JavaScript. -->
         <main class="flex-1">
-            </main>
+            </main
+
+                <!-- Pie de página del sitio -->
 
         <footer class="site-footer">
             <div class="container">
@@ -147,7 +153,10 @@
             </div>
         </footer>
     </div>
+
+     <!-- Enlace al script principal de JavaScript que controla la lógica de la aplicación -->
     <script src="script.js"></script>
 </body>
 
 </html>
+
