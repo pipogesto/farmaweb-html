@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileMenu = document.getElementById('mobile-menu');
 
     // --- ESTADO DE LA APLICACIÓN ---
-    let cart = []; // Array para guardar los productos del carrito
+    let cart = []; // Array para guardar los productos en carrito
     const allProducts = [
         { id: "1", name: "Paracetamol 500mg", description: "Analgésico y antipirético.", price: 99, image: "https://images.unsplash.com/photo-1596522016734-8e6136fe5cfa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZWRpY2luZSUyMHBpbGxzfGVufDF8fHx8MTc1OTIwNzc3OXww&ixlib=rb-4.1.0&q=80&w=1080", rating: 5, badge: "-20%", category: "medicamentos" },
         { id: "2", name: "Ibuprofeno 400mg", description: "Antiinflamatorio no esteroideo.", price: 130, image: "https://images.unsplash.com/photo-1596522016734-8e6136fe5cfa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZWRpY2luZSUyMHBpbGxzfGVufDF8fHx8MTc1OTIwNzc3OXww&ixlib=rb-4.1.0&q=80&w=1080", rating: 5, category: "medicamentos" },
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    function removeFromCart(productId) {
+    function removeFromCart(productId){
         cart = cart.filter(item => item.id !== productId);
         renderCartPage(root.querySelector('main'));
     }
@@ -592,4 +592,5 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Carga inicial
     loadPage('inicio');
+
 });
