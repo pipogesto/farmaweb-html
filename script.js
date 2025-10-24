@@ -1,11 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- INICIALIZACIÓN ---
+    
+    // --- 1. INICIALIZACIÓN ---
     const root = document.getElementById('root');
     const mobileMenuButton = document.querySelector('.mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
 
-    // --- ESTADO DE LA APLICACIÓN ---
+    // --- 2. ESTADO DE LA APLICACIÓN ---
     let cart = []; // Array para guardar los productos en carrito
+    let currentUser = null; // Para saber quién ha iniciado sesión
+
+    // Base de datos simulada de Usuarios
+    const allUsers = [
+        { email: "cliente@email.com", password: "123", role: "user", name: "Juan Cliente" },
+        { email: "admin@farmaplus.com", password: "admin123", role: "admin", name: "Admin FarmaPlus" } // Credenciales actualizadas
+    ];
+
+    // Base de datos simulada de Productos
     const allProducts = [
         { id: "1", name: "Paracetamol 500mg", description: "Analgésico y antipirético.", price: 99, image: "https://images.unsplash.com/photo-1596522016734-8e6136fe5cfa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZWRpY2luZSUyMHBpbGxzfGVufDF8fHx8MTc1OTIwNzc3OXww&ixlib=rb-4.1.0&q=80&w=1080", rating: 5, badge: "-20%", category: "medicamentos" },
         { id: "2", name: "Ibuprofeno 400mg", description: "Antiinflamatorio no esteroideo.", price: 130, image: "https://images.unsplash.com/photo-1596522016734-8e6136fe5cfa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZWRpY2luZSUyMHBpbGxzfGVufDF8fHx8MTc1OTIwNzc3OXww&ixlib=rb-4.1.0&q=80&w=1080", rating: 5, category: "medicamentos" },
@@ -17,11 +27,92 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: "20", name: "Tensiómetro Digital", description: "Medición automática.", price: 699, image: "https://images.unsplash.com/photo-1624638760852-8ede1666ab07?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaXJzdCUyMGFpZCUyMGtpdHxlbnwxfHx8fDE3NTkxNDE3NzZ8MA&ixlib.rb-4.1.0&q=80&w=1080", rating: 5, category: "primeros-auxilios" }
     ];
 
-    // --- MANEJO DE EVENTOS ---
+    // --- 3. MANEJO DE EVENTOS PRINCIPALES ---
     mobileMenuButton.addEventListener('click', toggleMobileMenu);
+    document.getElementById('desktop-search-input').addEventListener('input', handleSearch);
     document.body.addEventListener('click', handleBodyClick);
 
-    // --- LÓGICA DEL CARRITO ---
+
+    // --- 4. LÓGICA DE LOGIN Y PERMISOS ---
+    function handleLogin(event) {
+        event.preventDefault();
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+        const user = allUsers.find(u => u.email === email && u.password === password);
+
+        if (user) {
+            currentUser = user; // Inicia sesión
+            alert(`Bienvenido, ${currentUser.name}`);
+            updateLoginButton(); // Actualiza el botón de login/logout
+            // Redirige al dashboard si es admin, si no al inicio
+            if (currentUser.role === 'admin') {
+                loadPage('admin-dashboard');
+            } else {
+                loadPage('inicio');
+            }
+        } else {
+            document.getElementById('error-message')?.classList.remove('hidden');
+        }
+    }
+
+    function handleLogout() {
+        if (!currentUser) return;
+        alert(`Hasta pronto, ${currentUser.name}`);
+        currentUser = null; // Cierra sesión
+        updateLoginButton();
+        loadPage('inicio');
+    }
+    
+    function updateLoginButton() {
+        const loginContainers = document.querySelectorAll('.login-button-container');
+        const mobileSeparator = document.querySelector('.login-separator'); // Busca el <hr>
+
+        if (currentUser) {
+            // --- USUARIO HA INICIADO SESIÓN ---
+            let desktopHtml = '';
+            let mobileHtml = '';
+
+            if (currentUser.role === 'admin') {
+                desktopHtml += `<a href="#" data-page="admin-dashboard" class="nav-link" style="font-size: 0.875rem;">Panel Admin</a>`;
+                mobileHtml += `<a href="#" data-page="admin-dashboard" class="nav-link">Panel Admin</a>`;
+            }
+            desktopHtml += `<a href="#" data-page="cuenta" class="nav-link" style="font-size: 0.875rem;">Mi Cuenta</a>
+                            <button class="button button-outline logout-button" style="padding: 0.5rem 0.75rem; font-size: 0.875rem;">Cerrar Sesión</button>`;
+            mobileHtml += `<a href="#" data-page="cuenta" class="nav-link">Mi Cuenta</a>
+                        <a href="#" class="nav-link logout-button">Cerrar Sesión</a>`;
+
+            loginContainers.forEach(container => {
+                // 'data-context' es un atributo que añadimos en el HTML para diferenciar
+                if (container.dataset.context === "mobile") {
+                    container.innerHTML = mobileHtml;
+                } else {
+                    container.innerHTML = desktopHtml;
+                }
+            });
+            
+            if (mobileSeparator) mobileSeparator.classList.add('hidden'); // Oculta el <hr>
+
+        } else {
+            // --- USUARIO NO HA INICIADO SESIÓN ---
+            const desktopHtml = `<a href="#" data-page="login" class="login-button"><i data-lucide="user"></i><span>Iniciar Sesión</span></a>`;
+            const mobileHtml = `<a href="#" data-page="login" class="nav-link">Iniciar Sesión</a>
+                                <a href="#" data-page="registro" class="nav-link">Registrarse</a>`;
+            
+            loginContainers.forEach(container => {
+                if (container.dataset.context === "mobile") {
+                    container.innerHTML = mobileHtml;
+                } else {
+                    container.innerHTML = desktopHtml;
+                }
+            });
+
+            if (mobileSeparator) mobileSeparator.classList.remove('hidden'); // Muestra el <hr>
+        }
+
+        lucide.createIcons();
+    }
+    
+    // --- 5. LÓGICA DEL CARRITO ---
     function addToCart(productId) {
         const product = allProducts.find(p => p.id === productId);
         if (!product) return;
@@ -42,12 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 item.quantity = newQuantity;
                 renderCartPage(root.querySelector('main'));
+                updateCartBadge(); // Actualiza el contador en el header
             }
         }
     }
     function removeFromCart(productId){
         cart = cart.filter(item => item.id !== productId);
         renderCartPage(root.querySelector('main'));
+        updateCartBadge(); // Actualiza el badge al eliminar
     }
     function clearCart() {
         cart = [];
@@ -55,16 +148,47 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function updateCartBadge() {
         const cartBadge = document.querySelector('.cart-badge');
+        if (!cartBadge) return;
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
         cartBadge.textContent = totalItems;
-        cartBadge.style.display = totalItems > 0 ? 'flex' : 'none';
+        cartBadge.classList.toggle('hidden', totalItems <= 0);
     }
 
-    // --- FUNCIONES DE RENDERIZADO DE PÁGINAS ---
+    // --- NUEVA FUNCIÓN DE BÚSQUEDA ---
+    function handleSearch(event) {
+        const searchTerm = event.target.value.trim();
+        const activeLink = document.querySelector('.nav-link.active');
+        const currentPage = activeLink ? activeLink.dataset.page : null;
+
+        // Si el usuario no está en la página del catálogo, lo llevamos allí
+        if (currentPage !== 'catalogo') {
+            loadPage('catalogo');
+            // Usamos un pequeño delay para asegurarnos de que la página del catálogo se ha renderizado
+            // antes de intentar filtrar los productos.
+            setTimeout(() => {
+                filterProducts('all', searchTerm);
+            }, 100); // 100ms es suficiente
+        } else {
+            // Si ya está en el catálogo, filtramos directamente
+            filterProducts(document.querySelector('.filter-button.active').dataset.category, searchTerm);
+        }
+    }
+    // --- 6. LÓGICA DEL ROUTER (SPA) ---
     function loadPage(page) {
         const main = root.querySelector('main');
+        if (!main) {
+            console.error("Error: Elemento 'main' no encontrado.");
+            return; 
+        }
         main.innerHTML = '';
         window.scrollTo(0, 0);
+
+        // Control de acceso a la página de admin
+        if (page === 'admin-dashboard' && (!currentUser || currentUser.role !== 'admin')) {
+            alert('Acceso denegado. Debes ser administrador.');
+            loadPage('inicio');
+            return;
+        }
 
         const pageRenderFunctions = {
             'inicio': renderHomePage,
@@ -73,18 +197,30 @@ document.addEventListener('DOMContentLoaded', () => {
             'pago': renderPaymentPage,
             'nosotros': renderNosotrosPage,
             'contacto': renderContactPage,
+            'login': renderLoginPage, // Página de Login
+            'cuenta': renderCuentaPage, // Página de Mi Cuenta
+            'admin-dashboard': renderAdminDashboardPage, // Página de Admin
+            'orden-completa': renderOrderCompletePage, // Página de éxito
         };
 
         const renderFunction = pageRenderFunctions[page] || ((m) => {
             m.innerHTML = `<div class="container" style="padding: 4rem 1rem; text-align: center;"><h1>Página en Construcción: ${page}</h1></div>`;
         });
 
-        renderFunction(main);
-
-        lucide.createIcons();
+        // Try-catch para capturar errores durante el renderizado
+        try {
+            renderFunction(main);
+            lucide.createIcons(); // Renderizar iconos después de insertar HTML
+        } catch (error) {
+            console.error(`Error al renderizar la página '${page}':`, error);
+            main.innerHTML = `<div class="container" style="padding: 4rem 1rem; text-align: center;"><h1>Error al cargar la página</h1><p>Por favor, revisa la consola para más detalles.</p></div>`;
+        }
+        
         updateActiveLink(page);
         closeMobileMenu();
     }
+
+    // --- 7. FUNCIONES DE RENDERIZADO DE PÁGINAS ---
 
     function renderHomePage(main) {
         const heroSectionHTML = `
@@ -230,12 +366,15 @@ document.addEventListener('DOMContentLoaded', () => {
         filterButtonsContainer.querySelectorAll('.filter-button').forEach(button => {
             button.addEventListener('click', () => {
                 const category = button.getAttribute('data-category');
+                // Limpiamos el campo de búsqueda al cambiar de categoría
+                document.getElementById('desktop-search-input').value = '';
                 filterProducts(category);
                 filterButtonsContainer.querySelector('.active').classList.remove('active');
                 button.classList.add('active');
             });
         });
-        filterProducts('all');
+        // Al cargar la página, aplicamos el valor actual del input de búsqueda
+        filterProducts('all', document.getElementById('desktop-search-input').value);
     }
 
     function renderCartPage(main) {
@@ -374,6 +513,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     </form>
                 </div>
             </div>`;
+        
+        // Añadir listeners para el formulario de pago
+        main.querySelector('#payment-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('¡Pedido realizado con éxito! (Simulación)');
+            clearCart();
+            loadPage('orden-completa');
+        });
+        
+        main.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const isCard = e.target.value === 'card';
+                main.querySelector('#card-details-section').classList.toggle('hidden', !isCard);
+                main.querySelector('#paypal-message-section').classList.toggle('hidden', isCard);
+            });
+        });
     }
     
     function renderOrderCompletePage(main) {
@@ -451,23 +606,538 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <div class="form-section">
                             <h3>Envíanos un Mensaje</h3>
-                            <form id="contact-form" class="space-y-6">
+                            <form id="contact-form" style="display: flex; flex-direction: column; gap: 1rem;">
                                 <div class="form-grid">
                                     <div class="form-field"><label for="contact-name">Nombre *</label><input id="contact-name" required></div>
                                     <div class="form-field"><label for="contact-email">Email *</label><input id="contact-email" type="email" required></div>
                                 </div>
                                 <div class="form-field full-width"><label for="contact-subject">Asunto</label><input id="contact-subject"></div>
-                                <div class="form-field full-width"><label for="contact-message">Mensaje *</label><textarea id="contact-message" rows="6" required></textarea></div>
-                                <button type="submit" class="button button-primary"><i data-lucide="send"></i> Enviar Mensaje</button>
+                                <div class="form-field full-width"><label for="contact-message">Mensaje *</label><textarea id="contact-message" rows="5" required></textarea></div>
+                                <button type="submit" class="button button-primary" style="align-self: flex-start;">Enviar Mensaje</button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>`;
+        
+        // Listener para el formulario de contacto
+        main.querySelector('#contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Mensaje enviado con éxito. (Simulación)');
+            e.target.reset();
+        });
+    }
+
+    function renderCuentaPage(main) {
+        if (!currentUser) {
+            loadPage('login');
+            return;
+        }
+
+        main.innerHTML = `
+            <div class="account-page">
+                <div class="container">
+                    <div class="account-layout">
+                        <aside class="account-sidebar">
+                            <div class="account-sidebar-header">
+                                <h3>${currentUser.name}</h3>
+                                <p>${currentUser.email}</p>
+                            </div>
+                            <ul class="account-nav-list">
+                                <li><a href="#" class="account-nav-link active" data-section="summary"><i data-lucide="layout-dashboard"></i><span>Resumen</span></a></li>
+                                <li><a href="#" class="account-nav-link" data-section="personal-info"><i data-lucide="user"></i><span>Información Personal</span></a></li>
+                                <li><a href="#" class="account-nav-link" data-section="addresses"><i data-lucide="map-pin"></i><span>Mis Direcciones</span></a></li>
+                                <li><a href="#" class="account-nav-link" data-section="payment"><i data-lucide="credit-card"></i><span>Métodos de Pago</span></a></li>
+                                <li><a href="#" class="account-nav-link" data-section="wishlist"><i data-lucide="heart"></i><span>Lista de Deseos</span></a></li>
+                            </ul>
+                        </aside>
+                        <div class="account-content">
+                            <div id="summary" class="account-section">
+                                <h2>Resumen de la Cuenta</h2>
+                                <p>Bienvenido de nuevo, ${currentUser.name}. Desde aquí puedes gestionar tu información y ver tus pedidos.</p>
+                                <!-- Aquí podrías añadir tarjetas con resúmenes de pedidos, etc. -->
+                            </div>
+                            <div id="personal-info" class="account-section hidden">
+                                <h2>Información Personal</h2>
+                                <form id="personal-info-form" class="form-grid">
+                                    <div class="form-field"><label for="acc-name">Nombre</label><input id="acc-name" value="${currentUser.name}"></div>
+                                    <div class="form-field"><label for="acc-email">Email</label><input id="acc-email" type="email" value="${currentUser.email}" readonly></div>
+                                    <div class="form-field"><label for="acc-phone">Teléfono</label><input id="acc-phone" type="tel" placeholder="Añade tu teléfono"></div>
+                                    <div class="full-width" style="text-align: right;">
+                                        <button type="submit" class="button button-primary">Guardar Cambios</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div id="addresses" class="account-section hidden">
+                                <h2>Mis Direcciones</h2>
+                                <p>Gestiona tus direcciones de envío y facturación.</p>
+                                <p style="color: var(--muted-foreground); text-align: center; padding: 2rem;">Aún no has guardado ninguna dirección.</p>
+                                <button class="button button-primary">Añadir Nueva Dirección</button>
+                            </div>
+                            <div id="payment" class="account-section hidden">
+                                <h2>Métodos de Pago</h2>
+                                <p>Gestiona tus tarjetas guardadas.</p>
+                                <p style="color: var(--muted-foreground); text-align: center; padding: 2rem;">Aún no has guardado ninguna tarjeta.</p>
+                                <button class="button button-primary">Añadir Nueva Tarjeta</button>
+                            </div>
+                            <div id="wishlist" class="account-section hidden">
+                                <h2>Mi Lista de Deseos</h2>
+                                <p>Tus productos favoritos guardados para más tarde.</p>
+                                <p style="color: var(--muted-foreground); text-align: center; padding: 2rem;">Tu lista de deseos está vacía.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Lógica para cambiar de sección dentro de la página de cuenta
+        const accountContent = main.querySelector('.account-content');
+        main.querySelectorAll('.account-nav-link').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                
+                // Actualizar link activo
+                main.querySelector('.account-nav-link.active').classList.remove('active');
+                link.classList.add('active');
+
+                // Ocultar todas las secciones
+                accountContent.querySelectorAll('.account-section').forEach(section => {
+                    section.classList.add('hidden');
+                });
+
+                // Mostrar la sección correcta
+                const sectionId = link.dataset.section;
+                const sectionToShow = accountContent.querySelector(`#${sectionId}`);
+                if (sectionToShow) {
+                    sectionToShow.classList.remove('hidden');
+                }
+            });
+        });
+
+        // Listener para el formulario de información personal
+        main.querySelector('#personal-info-form')?.addEventListener('submit', e => {
+            e.preventDefault();
+            const newName = main.querySelector('#acc-name').value;
+            currentUser.name = newName; // Actualizamos el nombre en nuestro estado
+            alert('Información actualizada con éxito.');
+            updateLoginButton(); // Actualiza el header si el nombre cambió
+            loadPage('cuenta'); // Recargamos la página de cuenta para reflejar el nombre
+        });
+    }
+
+    // =======================================================
+    // --- 8. FUNCIONES DE LOGIN Y ADMIN DASHBOARD ---
+    // =======================================================
+
+    function renderLoginPage(main) {
+        main.innerHTML = `
+            <div style="display: flex; justify-content: center; align-items: center; padding: 4rem 1rem; min-height: 70vh;">
+                <div style="background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; border: 1px solid var(--border);">
+                    <h1 style="text-align: center; color: var(--primary); margin-bottom: 2rem;">Iniciar Sesión</h1>
+                    <form id="login-form">
+                        <div style="margin-bottom: 20px;">
+                            <label for="email" style="display: block; font-weight: bold; margin-bottom: 5px;">Correo Electrónico:</label>
+                            <input type="email" id="email" name="email" required style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 5px; box-sizing: border-box;">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label for="password" style="display: block; font-weight: bold; margin-bottom: 5px;">Contraseña:</label>
+                            <input type="password" id="password" name="password" required style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 5px; box-sizing: border-box;">
+                        </div>
+                        <p id="error-message" class="hidden" style="color: var(--destructive); text-align: center; font-weight: bold; margin-bottom: 1rem;">Correo o contraseña incorrectos.</p>
+                        <button type="submit" class="button button-primary w-full">Entrar</button>
+                    </form>
+                    <div style="text-align: center; margin-top: 20px; font-size: 0.875rem; color: var(--muted-foreground);">
+                        <p style="margin-bottom: 0.5rem;"><b>Usuario:</b> cliente@email.com / <b>Pass:</b> 123</p>
+                        <p><b>Admin:</b> admin@farmaplus.com / <b>Pass:</b> admin123</p>
+                    </div>
+                </div>
+            </div>`;
+        
+        // Listener para el formulario de login
+        main.querySelector('#login-form').addEventListener('submit', handleLogin);
+    }
+
+    function renderAdminDashboardPage(main) {
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert('Acceso denegado. Debes ser administrador.');
+            loadPage('inicio');
+            return;
+        }
+
+        main.innerHTML = `
+            <div class="admin-dashboard-container">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Panel de Administración</h1>
+                        <p>Monitorea y gestiona tu farmacia en tiempo real</p>
+                    </div>
+                    <div class="dashboard-actions">
+                        <select class="dashboard-select">
+                            <option value="this-week">Esta semana</option>
+                            <option value="last-week">Semana pasada</option>
+                            <option value="this-month">Este mes</option>
+                            <option value="last-month">Mes pasado</option>
+                        </select>
+                        <button class="dashboard-export-btn">
+                            <i data-lucide="download"></i>
+                            <span>Exportar</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="summary-cards-grid">
+                    <div class="summary-card">
+                        <div class="summary-card-header">
+                            <div class="summary-card-icon ingresos">
+                                <i data-lucide="dollar-sign"></i>
+                            </div>
+                            <span class="summary-card-trend positive">
+                                <i data-lucide="trending-up"></i> +12.5%
+                            </span>
+                        </div>
+                        <h2>$43,500</h2>
+                        <p>Ingresos Totales</p>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-header">
+                            <div class="summary-card-icon pedidos">
+                                <i data-lucide="shopping-cart"></i>
+                            </div>
+                            <span class="summary-card-trend positive">
+                                <i data-lucide="trending-up"></i> +8.2%
+                            </span>
+                        </div>
+                        <h2>125</h2>
+                        <p>Pedidos</p>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-header">
+                            <div class="summary-card-icon clientes">
+                                <i data-lucide="users"></i>
+                            </div>
+                            <span class="summary-card-trend positive">
+                                <i data-lucide="trending-up"></i> +15.3%
+                            </span>
+                        </div>
+                        <h2>342</h2>
+                        <p>Clientes Activos</p>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-header">
+                            <div class="summary-card-icon ticket">
+                                <i data-lucide="package"></i>
+                            </div>
+                            <span class="summary-card-trend negative">
+                                <i data-lucide="trending-down"></i> -2.1%
+                            </span>
+                        </div>
+                        <h2>$348.00</h2>
+                        <p>Ticket Promedio</p>
+                    </div>
+                </div>
+
+                <div class="charts-and-lists-grid">
+                    <div class="chart-card">
+                        <h3>Ventas de la Semana</h3>
+                        <div style="position: relative; height: 300px;">
+                            <canvas id="weeklySalesChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Distribución por Categoría</h3>
+                        <div style="position: relative; height: 300px;">
+                            <canvas id="categoryDistributionChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card" style="grid-column: 1 / -1;">
+                        <h3>Tendencia de Ventas Mensual</h3>
+                        <div style="position: relative; height: 300px;">
+                            <canvas id="monthlySalesChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="list-card">
+                        <div class="list-card-header">
+                            <h3>Productos Más Vendidos</h3>
+                            <a href="#" class="link">Ver todos</a>
+                        </div>
+                        <div class="product-list">
+                            <div class="product-item">
+                                <div class="product-item-info">
+                                    <span class="rank">1</span>
+                                    <img src="${allProducts.length > 0 ? allProducts[0].image : ''}" alt="${allProducts.length > 0 ? allProducts[0].name : ''}">
+                                    <div class="product-item-details">
+                                        <strong>${allProducts.length > 0 ? allProducts[0].name : 'N/A'}</strong>
+                                        <span>150 ventas</span>
+                                    </div>
+                                </div>
+                                <div class="product-item-sales">
+                                    <strong>$14,850</strong>
+                                    <span>ingresos</span>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-item-info">
+                                    <span class="rank">2</span>
+                                    <img src="${allProducts.length > 1 ? allProducts[1].image : ''}" alt="${allProducts.length > 1 ? allProducts[1].name : ''}">
+                                    <div class="product-item-details">
+                                        <strong>${allProducts.length > 1 ? allProducts[1].name : 'N/A'}</strong>
+                                        <span>130 ventas</span>
+                                    </div>
+                                </div>
+                                <div class="product-item-sales">
+                                    <strong>$16,900</strong>
+                                    <span>ingresos</span>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-item-info">
+                                    <span class="rank">3</span>
+                                     <img src="${allProducts.length > 2 ? allProducts[2].image : ''}" alt="${allProducts.length > 2 ? allProducts[2].name : ''}">
+                                    <div class="product-item-details">
+                                        <strong>${allProducts.length > 2 ? allProducts[2].name : 'N/A'}</strong>
+                                        <span>110 ventas</span>
+                                    </div>
+                                </div>
+                                <div class="product-item-sales">
+                                    <strong>$35,200</strong>
+                                    <span>ingresos</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-card">
+                        <div class="list-card-header">
+                            <h3>Pedidos Recientes</h3>
+                            <a href="#" class="link">Ver todos</a>
+                        </div>
+                        <div class="order-list">
+                            <div class="order-item">
+                                <div class="order-item-details">
+                                    <strong>ORD-001 <span class="order-status-badge completed">Completado</span></strong>
+                                    <span>María González</span>
+                                    <span><i data-lucide="calendar" style="width:1rem;height:1rem; vertical-align: middle;"></i> 2025-09-30</span>
+                                </div>
+                                <span class="order-item-amount">$850</span>
+                            </div>
+                            <div class="order-item">
+                                <div class="order-item-details">
+                                    <strong>ORD-002 <span class="order-status-badge pending">Pendiente</span></strong>
+                                    <span>Carlos Ramírez</span>
+                                    <span><i data-lucide="calendar" style="width:1rem;height:1rem; vertical-align: middle;"></i> 2025-09-30</span>
+                                </div>
+                                <span class="order-item-amount">$420</span>
+                            </div>
+                            <div class="order-item">
+                                <div class="order-item-details">
+                                    <strong>ORD-003 <span class="order-status-badge in-progress">En Proceso</span></strong>
+                                    <span>Ana Martínez</span>
+                                    <span><i data-lucide="calendar" style="width:1rem;height:1rem; vertical-align: middle;"></i> 2025-09-29</span>
+                                </div>
+                                <span class="order-item-amount">$1250</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // --- INICIALIZACIÓN DE GRÁFICOS ---
+        // Se usa setTimeout para darle tiempo al DOM a renderizar el canvas
+        setTimeout(() => {
+            renderWeeklySalesChart();
+            renderCategoryDistributionChart();
+            renderMonthlySalesChart();
+        }, 0); // 0ms de espera es suficiente
+    }
+
+    // --- 9. FUNCIONES PARA LOS GRÁFICOS ---
+    
+    function renderWeeklySalesChart() {
+        const ctx = document.getElementById('weeklySalesChart');
+        if (!ctx) return; 
+
+        // Destruir gráfico anterior si existe para evitar conflictos
+        const existingChart = Chart.getChart(ctx);
+        if (existingChart) {
+            existingChart.destroy();
+        }
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                datasets: [{
+                    label: 'Ventas ($)',
+                    data: [4500, 5200, 4800, 6100, 7500, 8300, 7000],
+                    borderColor: 'rgb(37, 99, 235)', // Azul (var(--primary))
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: 'rgb(37, 99, 235)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(37, 99, 235)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                return ` Ventas: $${context.parsed.y.toLocaleString('es-MX')}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                        ticks: {
+                            callback: function(value) { return `$${value / 1000}k`; }
+                        }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                }
+            }
+        });
+    }
+
+    function renderCategoryDistributionChart() {
+        const ctx = document.getElementById('categoryDistributionChart');
+        if (!ctx) return;
+
+        const existingChart = Chart.getChart(ctx);
+        if (existingChart) {
+            existingChart.destroy();
+        }
+
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Medicamentos', 'Cuidado Personal', 'Vitaminas', 'Bebé', 'Otros'],
+                datasets: [{
+                    label: 'Distribución',
+                    data: [45, 25, 15, 10, 5],
+                    backgroundColor: [
+                        'rgb(37, 99, 235)',
+                        'rgb(236, 72, 153)',
+                        'rgb(16, 185, 129)',
+                        'rgb(245, 158, 11)',
+                        'rgb(100, 116, 139)'
+                    ],
+                    hoverOffset: 8,
+                    borderWidth: 0,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 20,
+                            font: { size: 12 }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) { label += ': '; }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function renderMonthlySalesChart() {
+        const ctx = document.getElementById('monthlySalesChart');
+        if (!ctx) return;
+
+        const existingChart = Chart.getChart(ctx);
+        if (existingChart) {
+            existingChart.destroy();
+        }
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                datasets: [{
+                    label: 'Ventas ($)',
+                    data: [45000, 48000, 55000, 52000, 61000, 75000, 83000, 70000, 65000, 88000, 92000, 110000],
+                    backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                    borderColor: 'rgb(37, 99, 235)',
+                    borderWidth: 2,
+                    borderRadius: 4,
+                    hoverBackgroundColor: 'rgba(37, 99, 235, 0.4)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        mode: 'index', // Muestra tooltip al pasar sobre el área de la barra
+                        intersect: false, // No necesita tocar la barra exactamente
+                        callbacks: {
+                            label: function(context) {
+                                return ` Ventas: $${context.parsed.y.toLocaleString('es-MX')}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                        ticks: {
+                            callback: function(value) { return `$${value / 1000}k`; }
+                        }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
+
+    // --- 10. FUNCIONES AUXILIARES ---
+
+    function getRatingHTML(rating) {
+        let html = '';
+        for (let i = 1; i <= 5; i++) {
+            // Asegura que use la clase CSS correcta para los iconos de estrella
+            html += `<i data-lucide="star" style="width: 1rem; height: 1rem;" class="${i <= rating ? 'star-filled' : 'star-empty'}"></i>`;
+        }
+        return html;
     }
 
     function getProductCardHTML(product) {
-        let stars = Array(5).fill(0).map((_, i) => `<i data-lucide="star" class="${i < product.rating ? 'star-filled' : 'star-empty'}"></i>`).join('');
         return `
             <div class="product-card">
                 <div class="product-card-image-wrapper">
@@ -475,122 +1145,146 @@ document.addEventListener('DOMContentLoaded', () => {
                     ${product.badge ? `<div class="product-card-badge">${product.badge}</div>` : ''}
                 </div>
                 <div class="product-card-content">
-                    <div class="product-rating">${stars}<span class="product-rating-text">(${product.rating}.0)</span></div>
+                    <div class="product-rating">
+                        ${getRatingHTML(product.rating)}
+                        <span class="product-rating-text">(${product.rating}.0)</span>
+                    </div>
                     <h3 class="product-name">${product.name}</h3>
                     <p class="product-description">${product.description}</p>
                     <div class="product-footer">
                         <div class="product-price">
-                            <span class="product-current-price">$${product.price}</span>
-                            ${product.originalPrice ? `<span class="product-original-price">$${product.originalPrice}</span>` : ''}
+                            <span class="product-current-price">$${product.price.toFixed(2)}</span>
+                            ${product.originalPrice ? `<span class="product-original-price">$${product.originalPrice.toFixed(2)}</span>` : ''}
                         </div>
                         <button class="button button-primary add-to-cart-btn" data-product-id="${product.id}">
-                            <i data-lucide="shopping-cart"></i><span>Añadir</span>
+                            <i data-lucide="shopping-cart"></i>
                         </button>
                     </div>
                 </div>
-            </div>`;
+            </div>
+        `;
     }
 
-    function filterProducts(category) {
-        const productsGrid = document.getElementById('catalog-products-grid');
-        const productCount = document.querySelector('.product-count');
-        const filtered = category === 'all' ? allProducts : allProducts.filter(p => p.category === category);
-        productsGrid.innerHTML = filtered.map(getProductCardHTML).join('');
-        productCount.textContent = `Mostrando ${filtered.length} producto${filtered.length !== 1 ? 's' : ''}`;
-        lucide.createIcons();
-    }
-    
-    // --- MANEJADORES Y LÓGICA DE INTERACCIÓN ---
-    function toggleMobileMenu() {
-        const isHidden = mobileMenu.style.display === 'none' || !mobileMenu.style.display;
-        mobileMenu.style.display = isHidden ? 'flex' : 'none';
-        const icon = mobileMenuButton.querySelector('i');
-        icon.setAttribute('data-lucide', isHidden ? 'x' : 'menu');
-        lucide.createIcons({ nodes: [icon] });
-    }
-    function closeMobileMenu() {
-        if (mobileMenu.style.display === 'flex') {
-            mobileMenu.style.display = 'none';
-            const icon = mobileMenuButton.querySelector('i');
-            icon.setAttribute('data-lucide', 'menu');
-            lucide.createIcons({ nodes: [icon] });
+    function filterProducts(category, searchTerm = '') {
+        const grid = document.getElementById('catalog-products-grid');
+        const count = document.querySelector('.product-count');
+        if (!grid || !count) return;
+
+        const searchTermLower = searchTerm.toLowerCase();
+
+        let filteredProducts = allProducts;
+
+        // 1. Filtrar por categoría
+        if (category !== 'all') {
+            filteredProducts = filteredProducts.filter(p => p.category === category);
+        }
+
+        // 2. Filtrar por término de búsqueda (nombre o descripción)
+        if (searchTermLower) {
+            filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(searchTermLower) || p.description.toLowerCase().includes(searchTermLower));
+        }
+        
+        if (filteredProducts.length === 0) {
+            grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--muted-foreground); padding: 2rem 0;">No se encontraron productos que coincidan con tu búsqueda.</p>';
+        } else {
+            grid.innerHTML = filteredProducts.map(getProductCardHTML).join('');
+            // Volver a renderizar iconos después de insertar las tarjetas
+            lucide.createIcons();
+        }
+
+        // Lógica para mostrar el contador de productos
+        if (searchTerm || category !== 'all') {
+            count.textContent = `Mostrando ${filteredProducts.length} de ${allProducts.length} productos`;
+        } else {
+            // Si no hay filtro ni búsqueda, muestra el total
+            count.textContent = `Mostrando ${allProducts.length} productos`;
         }
     }
-    function updateActiveLink(page) {
+
+    function handleBodyClick(event) {
+        // Manejador para todos los enlaces de navegación de la SPA
+        const pageLink = event.target.closest('[data-page]');
+        if (pageLink) {
+            event.preventDefault();
+            const page = pageLink.getAttribute('data-page');
+            loadPage(page);
+        }
+
+        // Manejador para el botón de "Añadir al Carrito"
+        const addToCartButton = event.target.closest('.add-to-cart-btn');
+        if (addToCartButton) {
+            const productId = addToCartButton.getAttribute('data-product-id');
+            addToCart(productId);
+        }
+
+        // Manejadores para los botones del carrito (+, -, eliminar)
+        const cartButton = event.target.closest('.quantity-btn, .remove-item-btn');
+        if (cartButton) {
+            const productId = cartButton.getAttribute('data-product-id');
+            const action = cartButton.getAttribute('data-action');
+            const item = cart.find(i => i.id === productId);
+
+            if (item) { // Solo si el item existe en el carrito
+                if (action === 'increase') {
+                    updateCartItemQuantity(productId, item.quantity + 1);
+                } else if (action === 'decrease') {
+                    updateCartItemQuantity(productId, item.quantity - 1);
+                } else if (action === 'remove') {
+                    removeFromCart(productId);
+                }
+            }
+        }
+        
+        // Manejador para el botón de Logout (usando clase)
+        const logoutButton = event.target.closest('.logout-button');
+        if (logoutButton) {
+            event.preventDefault(); // Previene que el <a> de móvil navegue
+            handleLogout();
+        }
+
+        // Manejador para la navegación interna de la página "Mi Cuenta"
+        // NOTA: Se movió la lógica directamente a `renderCuentaPage` para simplificar
+        // y asegurar que los listeners se añaden solo cuando la página se renderiza.
+        // Esto evita errores si los elementos no existen en el DOM.
+        // const accountLink = event.target.closest('.account-nav-link');
+        // if (accountLink) {
+        //     event.preventDefault();
+        //     const sectionId = accountLink.dataset.section;
+        //     document.querySelectorAll('.account-section').forEach(s => s.classList.add('hidden'));
+        //     document.getElementById(sectionId)?.classList.remove('hidden');
+            
+        //     document.querySelectorAll('.account-nav-link').forEach(l => l.classList.remove('active'));
+        //     accountLink.classList.add('active');
+        // }
+
+
+
+
+    }
+
+    function toggleMobileMenu() {
+        if (!mobileMenu) return;
+        mobileMenu.classList.toggle('hidden');
+    }
+
+    function closeMobileMenu() {
+        if (!mobileMenu) return;
+        mobileMenu.classList.add('hidden');
+    }
+
+    function updateActiveLink(currentPage) {
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('data-page') === page) {
+            if (link.getAttribute('data-page') === currentPage) {
                 link.classList.add('active');
+            } else {
+                link.classList.remove('active');
             }
         });
     }
 
-    function handleBodyClick(e) {
-        const navTarget = e.target.closest('[data-page]');
-        if (navTarget) {
-            e.preventDefault();
-            loadPage(navTarget.getAttribute('data-page'));
-            return;
-        }
-
-        if (e.target.closest('#newsletter-subscribe')) {
-            const emailInput = document.getElementById('newsletter-email');
-            alert(emailInput.value ? "¡Gracias por suscribirte!" : "Por favor, ingresa tu email");
-            if(emailInput.value) emailInput.value = "";
-            return;
-        }
-        
-        const addToCartButton = e.target.closest('.add-to-cart-btn');
-        if (addToCartButton) {
-            addToCart(addToCartButton.dataset.productId);
-            return;
-        }
-        const quantityButton = e.target.closest('.quantity-btn');
-        if(quantityButton) {
-            const { productId, action } = quantityButton.dataset;
-            const item = cart.find(i => i.id === productId);
-            if(item) {
-                const newQuantity = action === 'increase' ? item.quantity + 1 : item.quantity - 1;
-                updateCartItemQuantity(productId, newQuantity);
-            }
-            return;
-        }
-        const removeButton = e.target.closest('.remove-item-btn');
-        if(removeButton) {
-            removeFromCart(removeButton.dataset.productId);
-            return;
-        }
-
-        const paymentForm = e.target.closest('#payment-form');
-        if(paymentForm) {
-             e.preventDefault();
-             paymentForm.querySelector('button[type="submit"]').textContent = "Procesando...";
-             setTimeout(() => {
-                clearCart();
-                renderOrderCompletePage(root.querySelector('main'));
-             }, 2000);
-        }
-        const contactForm = e.target.closest('#contact-form');
-        if (contactForm) {
-            e.preventDefault();
-            alert('¡Mensaje enviado con éxito! Te responderemos pronto.');
-            contactForm.reset();
-        }
-
-        if(e.target.matches('input[name="paymentMethod"]')) {
-             const cardDetails = document.getElementById('card-details-section');
-             const paypalMessage = document.getElementById('paypal-message-section');
-             if (e.target.value === 'card') {
-                 cardDetails.style.display = 'flex';
-                 paypalMessage.style.display = 'none';
-             } else {
-                 cardDetails.style.display = 'none';
-                 paypalMessage.style.display = 'block';
-             }
-        }
-    }
-    
-    // Carga inicial
+    // --- 11. INICIO DE LA APLICACIÓN ---
     loadPage('inicio');
-
-});
+    updateCartBadge();
+    updateLoginButton();
+    
+}); // <-- ¡ASEGÚRATE DE QUE ESTA ES LA ÚLTIMA LÍNEA!
