@@ -1264,6 +1264,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleMobileMenu() {
         if (!mobileMenu) return;
+        // Elimina el estilo en línea si existe, para evitar conflictos con la clase 'hidden'
+        mobileMenu.style.display = ''; 
         mobileMenu.classList.toggle('hidden');
     }
 
