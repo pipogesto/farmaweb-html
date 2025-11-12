@@ -19,26 +19,37 @@ export function handleBodyClick(event) {
         addToCart(productId);
     }
 
-  // 3. Manejadores para los botones del carrito (+, -, eliminar)
+ // 3. Manejadores para los botones del carrito (+, -, eliminar)
     const cartButton = event.target.closest('.quantity-btn, .remove-item-btn');
     if (cartButton) {
         const productId = cartButton.getAttribute('data-product-id');
         const action = cartButton.getAttribute('data-action');
         let needsReload = false;
 
-        // La línea errónea (const item = ...) ha sido eliminada.
-        
-        if (action === 'increase') {
-            const quantitySpan = cartButton.previousElementSibling;
+        // --- INICIO DE LA CORRECCIÓN ROBUSTA ---
+
+        if (action === 'increase' || action === 'decrease') {
+            // 1. Encontrar el contenedor padre
+            const quantityControl = cartButton.closest('.quantity-control');
+            if (!quantityControl) return; // Salir si no se encuentra
+
+            // 2. Encontrar el <span> de la cantidad dentro del padre
+            const quantitySpan = quantityControl.querySelector('.quantity-display');
+            if (!quantitySpan) return; // Salir si no se encuentra
+
             const currentQuantity = parseInt(quantitySpan.textContent);
-            needsReload = updateCartItemQuantity(productId, currentQuantity + 1);
-        } else if (action === 'decrease') {
-            const quantitySpan = cartButton.nextElementSibling;
-            const currentQuantity = parseInt(quantitySpan.textContent);
-            needsReload = updateCartItemQuantity(productId, currentQuantity - 1);
+
+            if (action === 'increase') {
+                needsReload = updateCartItemQuantity(productId, currentQuantity + 1);
+            } else { // action === 'decrease'
+                needsReload = updateCartItemQuantity(productId, currentQuantity - 1);
+            }
+
         } else if (action === 'remove') {
             needsReload = removeFromCart(productId);
         }
+        
+        // --- FIN DE LA CORRECCIÓN ROBUSTA ---
         
         // Si la acción modificó el carrito, y estamos en la pág. de carrito, recargamos
         if (needsReload) {
@@ -49,7 +60,6 @@ export function handleBodyClick(event) {
             }
         }
     }
-
     // 4. Manejador para Logout
     const logoutButton = event.target.closest('.logout-button');
     if (logoutButton) {
