@@ -19,14 +19,14 @@ export function handleBodyClick(event) {
         addToCart(productId);
     }
 
-   // 3. Manejadores para los botones del carrito (+, -, eliminar)
+  // 3. Manejadores para los botones del carrito (+, -, eliminar)
     const cartButton = event.target.closest('.quantity-btn, .remove-item-btn');
     if (cartButton) {
         const productId = cartButton.getAttribute('data-product-id');
         const action = cartButton.getAttribute('data-action');
         let needsReload = false;
 
-        // const item = addToCartButton.closest('.cart-item'); // No, esto es un error.  <-- LÍNEA ELIMINADA O COMENTADA
+        // La línea errónea (const item = ...) ha sido eliminada.
         
         if (action === 'increase') {
             const quantitySpan = cartButton.previousElementSibling;
@@ -49,6 +49,7 @@ export function handleBodyClick(event) {
             }
         }
     }
+
     // 4. Manejador para Logout
     const logoutButton = event.target.closest('.logout-button');
     if (logoutButton) {
