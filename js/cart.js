@@ -71,4 +71,41 @@ export async function renderCartPage(main) {
                 </div>
             </div>`;
     }
+}        const shipping = subtotal >= 900 ? 0 : 99;
+        const total = subtotal + shipping;
+
+        main.innerHTML = `
+            <div class="cart-page">
+                <div class="container">
+                    <div class="page-header">
+                        <h1 class="page-title">Carrito de Compras</h1>
+                        <p class="page-description">Revisa tus productos antes de finalizar la compra</p>
+                    </div>
+                    <div class="cart-grid">
+                        <div class="cart-items-container">${itemsHTML}</div>
+                        <div class="order-summary">
+                            <h3 class="summary-title">Resumen del Pedido</h3>
+                            <div class="summary-row">
+                                <span class="label">Subtotal</span>
+                                <span>$${subtotal.toFixed(2)}</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="label">Envío</span>
+                                <span>${shipping === 0 ? 'GRATIS' : `$${shipping.toFixed(2)}`}</span>
+                            </div>
+                            <div class="summary-divider"></div>
+                            <div class="summary-total">
+                                <span class="label">Total</span>
+                                <span class="price">$${total.toFixed(2)}</span>
+                            </div>
+                            ${subtotal < 900 ? `<div class="promo-banner">Añade $${(900 - subtotal).toFixed(2)} más para envío gratis</div>` : ''}
+                            <div class="cart-page-actions">
+                                <a href="#" data-page="pago" class="button button-primary w-full">Proceder al Pago</a>
+                                <a href="#" data-page="catalogo" class="button button-outline w-full">Seguir Comprando</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+    }
 }
