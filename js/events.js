@@ -19,7 +19,7 @@ export function handleBodyClick(event) {
         addToCart(productId);
     }
 
-    // 3. Manejadores para los botones del carrito (+, -, eliminar)
+   // 3. Manejadores para los botones del carrito (+, -, eliminar)
     const cartButton = event.target.closest('.quantity-btn, .remove-item-btn');
     if (cartButton) {
         const productId = cartButton.getAttribute('data-product-id');
