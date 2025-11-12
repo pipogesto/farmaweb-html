@@ -1,136 +1,74 @@
-// js/cart.js
-import { getCart, setCart, allProducts } from './state.js';
+// js/pages/cart.js
+import { getCart } from '../state.js';
 
-export function addToCart(productId) {
-    const product = allProducts.find(p => p.id === productId);
-    if (!product) return;
+export async function renderCartPage(main) {
+    const cart = getCart();
 
-    let cart = getCart();
-    const existingItem = cart.find(item => item.id === productId);
-
-    if (existingItem) {
-        existingItem.quantity++;
+    if (cart.length === 0) {
+        // Cargar el HTML de carrito vacío
+        const response = await fetch('pages/carrito.html');
+        main.innerHTML = await response.text();
     } else {
-        cart.push({ ...product, quantity: 1 });
+        // Generar el HTML dinámicamente si hay items
+        const itemsHTML = cart.map(item => `
+            <div class="cart-item">
+                <div class="cart-item-image"><img src="${item.image}" alt="${item.name}"></div>
+                <div class="cart-item-details">
+                    <h3 class="cart-item-name">${item.name}</h3>
+                    <p class="cart-item-description">${item.description}</p>
+                    <div class="cart-item-actions">
+                        <div class="quantity-control">
+                            <button class="button button-outline quantity-btn" data-product-id="${item.id}" data-action="decrease">-</button>
+                            <span class="quantity-display">${item.quantity}</span>
+                            <button class="button button-outline quantity-btn" data-product-id="${item.id}" data-action="increase">+</button>
+                        </div>
+                        <div class="cart-item-price-section">
+                            <span class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</span>
+                            <button class="icon-button remove-item-btn" data-product-id="${item.id}" data-action="remove">
+                                <i data-lucide="trash-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const shipping = subtotal >= 900 ? 0 : 99;
+        const total = subtotal + shipping;
+
+        main.innerHTML = `
+            <div class="cart-page">
+                <div class="container">
+                    <div class="page-header">
+                        <h1 class="page-title">Carrito de Compras</h1>
+                        <p class="page-description">Revisa tus productos antes de finalizar la compra</p>
+                    </div>
+                    <div class="cart-grid">
+                        <div class="cart-items-container">${itemsHTML}</div>
+                        <div class="order-summary">
+                            <h3 class="summary-title">Resumen del Pedido</h3>
+                            <div class="summary-row">
+                                <span class="label">Subtotal</span>
+                                <span>$${subtotal.toFixed(2)}</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="label">Envío</span>
+                                <span>${shipping === 0 ? 'GRATIS' : `$${shipping.toFixed(2)}`}</span>
+                            </div>
+                            <div class="summary-divider"></div>
+                            <div class="summary-total">
+                                <span class="label">Total</span>
+                                <span class="price">$${total.toFixed(2)}</span>
+                            </div>
+                            ${subtotal < 900 ? `<div class="promo-banner">Añade $${(900 - subtotal).toFixed(2)} más para envío gratis</div>` : ''}
+                            <div class="cart-page-actions">
+                                <a href="#" data-page="pago" class="button button-primary w-full">Proceder al Pago</a>
+                                <a href="#" data-page="catalogo" class="button button-outline w-full">Seguir Comprando</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
     }
-
-    alert(`${product.name} ha sido añadido al carrito.`);
-    updateCartBadge();
-    renderCartUI(); // 🔄 Actualiza la vista
-}
-
-export function updateCartItemQuantity(productId, newQuantity) {
-    let cart = getCart();
-    const itemIndex = cart.findIndex(item => item.id === productId);
-
-    if (itemIndex > -1) {
-        if (newQuantity <= 0) {
-            cart.splice(itemIndex, 1);
-        } else {
-            cart[itemIndex].quantity = newQuantity;
-        }
-        updateCartBadge();
-        renderCartUI(); // 🔄 Actualiza la vista
-        return true;
-    }
-    return false;
-}
-
-export function removeFromCart(productId) {
-    let cart = getCart();
-    const newCart = cart.filter(item => item.id !== productId);
-    setCart(newCart);
-    updateCartBadge();
-    renderCartUI(); // 🔄 Actualiza la vista
-    return true;
-}
-
-export function clearCart() {
-    setCart([]);
-    updateCartBadge();
-    renderCartUI(); // 🔄 Limpia la vista
-}
-
-export function updateCartBadge() {
-    const cart = getCart();
-    const cartBadge = document.querySelector('.cart-badge');
-    if (!cartBadge) return;
-
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartBadge.textContent = totalItems;
-    cartBadge.classList.toggle('hidden', totalItems <= 0);
-}
-
-// 🆕 NUEVA FUNCIÓN: Renderiza el carrito en pantalla
-export function renderCartUI() {
-    const cart = getCart();
-    const cartContainer = document.getElementById("cart-items");
-    if (!cartContainer) return;
-
-    cartContainer.innerHTML = "";
-
-    cart.forEach(item => {
-        const itemElement = document.createElement("div");
-        itemElement.classList.add("cart-item");
-        itemElement.innerHTML = `
-            <span>${item.name}</span>
-            <span>Cantidad: ${item.quantity}</span>
-            <button onclick="window.increaseQuantity('${item.id}')">+</button>
-            <button onclick="window.decreaseQuantity('${item.id}')">-</button>
-            <button onclick="window.removeFromCart('${item.id}')">Eliminar</button>
-        `;
-        cartContainer.appendChild(itemElement);
-    });
-}
-
-// 🆕 FUNCIONES GLOBALES para botones dinámicos
-window.increaseQuantity = function(productId) {
-    let cart = getCart();
-    const item = cart.find(p => p.id === productId);
-    if (item) {
-        item.quantity++;
-        updateCartBadge();
-        renderCartUI();
-    }
-};
-
-window.decreaseQuantity = function(productId) {
-    let cart = getCart();
-    const item = cart.find(p => p.id === productId);
-    if (item) {
-        item.quantity--;
-        if (item.quantity <= 0) {
-            cart = cart.filter(p => p.id !== productId);
-            setCart(cart);
-        }
-        updateCartBadge();
-        renderCartUI();
-    }
-};
-
-window.removeFromCart = function(productId) {
-    removeFromCart(productId);
-};}
-
-export function removeFromCart(productId) {
-    let cart = getCart();
-    const newCart = cart.filter(item => item.id !== productId);
-    setCart(newCart);
-    updateCartBadge();
-    return true; // Indica que se necesita recargar
-}
-
-export function clearCart() {
-    setCart([]);
-    updateCartBadge();
-}
-
-export function updateCartBadge() {
-    const cart = getCart();
-    const cartBadge = document.querySelector('.cart-badge');
-    if (!cartBadge) return;
-    
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartBadge.textContent = totalItems;
-    cartBadge.classList.toggle('hidden', totalItems <= 0);
 }
