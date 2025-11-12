@@ -26,7 +26,7 @@ export function handleBodyClick(event) {
         const action = cartButton.getAttribute('data-action');
         let needsReload = false;
 
-        const item = addToCartButton.closest('.cart-item'); // No, esto es un error.
+        // const item = addToCartButton.closest('.cart-item'); // No, esto es un error.  <-- LÍNEA ELIMINADA O COMENTADA
         
         if (action === 'increase') {
             const quantitySpan = cartButton.previousElementSibling;
@@ -49,7 +49,6 @@ export function handleBodyClick(event) {
             }
         }
     }
-
     // 4. Manejador para Logout
     const logoutButton = event.target.closest('.logout-button');
     if (logoutButton) {
