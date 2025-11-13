@@ -68,9 +68,9 @@ async function renderHomePage(main) {
 
     // Renderizar Categorías
     const categories = [
-        { title: "Medicamentos", description: "Amplia gama de medicamentos", icon: "pill", image: "imagenes/mediamentos.png", color: "#3b82f6" },
-        { title: "Cuidado Personal", description: "Belleza y cuidado de la piel", icon: "sparkles", image: "imagenes/cuidado-personal.png", color: "#ec4899" },
-        { title: "Vitaminas", description: "Suplementos para tu bienestar", icon: "heart", image: "imagenes/vitaminas.png", color: "#10b981" },
+        { title: "Medicamentos", description: "Amplia gama de medicamentos", icon: "pill", image:"imagenes/medicamentos.png", color: "#3b82f6" },
+        { title: "Cuidado Personal", description: "Belleza y cuidado de la piel", icon: "sparkles", image:"imagenes/cuidado-personal.png", color: "#ec4899" },
+        { title: "Vitaminas", description: "Suplementos para tu bienestar", icon: "heart", image:"imagenes/vitaminas.png", color: "#10b981" },
         { title: "Bebé y Mamá", description: "Cuidado para los más pequeños", icon: "baby", image: "imagenes/bebe-mama.png", color: "#f59e0b" },
         { title: "Primeros Auxilios", description: "Material de curación y emergencias", icon: "bandage", image: "imagenes/primeros-auxilios.png", color: "#ef4444" },
         { title: "Nutrición", description: "Nutrición deportiva y dietética", icon: "salad", image: "imagenes/nutricion.png", color: "#8b5cf6" },
