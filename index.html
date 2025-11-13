@@ -34,7 +34,91 @@
             <div class="main-header">
                 <div class="container">
                     <div class="main-header-content">
-                        <a href="#" data-page="inicio" class="logo">
+                        <a href="#inicio" class="logo">
+                            <div class="logo-icon">⚕️</div>
+                            <div>
+                                <h1 class="logo-title">FarmaPlus</h1>
+                                <p class="logo-subtitle">Tu farmacia de confianza</p>
+                            </div>
+                        </a>
+                        <div class="search-bar">
+                            <i data-lucide="search" class="search-icon"></i>
+                            <input type="text" placeholder="Buscar medicamentos, productos..." class="search-input" id="desktop-search-input" />
+                        </div>
+
+                        <div class="header-actions">
+                            <button class="icon-button mobile-search-button">
+                                <i data-lucide="search"></i>
+                            </button>
+                            <a href="#carrito" class="icon-button cart-button">
+                                <i data-lucide="shopping-cart"></i>
+                                <span class="cart-badge">0</span>
+                            </a>
+                            
+                            <div class="login-button-container" data-context="desktop">
+                                <a href="#login" class="login-button">
+                                    <i data-lucide="user"></i>
+                                    <span>Iniciar Sesión</span>
+                                </a>
+                            </div>
+                            
+                            <button class="icon-button mobile-menu-button">
+                                <i data-lucide="menu"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <nav class="nav-desktop">
+                        <a href="#inicio" data-page="inicio" class="nav-link active">Inicio</a>
+                        <a href="#catalogo" data-page="catalogo" class="nav-link">Catálogo</a>
+                        <a href="#nosotros" data-page="nosotros" class="nav-link">Nosotros</a>
+                        <a href="#contacto" data-page="contacto" class="nav-link">Contacto</a>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-mobile hidden" id="mobile-menu">
+                <a href="#inicio" data-page="inicio" class="nav-link active">Inicio</a>
+                <a href="#catalogo" data-page="catalogo" class="nav-link">Catálogo</a>
+                <a href="#nosotros" data-page="nosotros" class="nav-link">Nosotros</a>
+                <a href="#contacto" data-page="contacto" class="nav-link">Contacto</a>
+                
+                <hr class="login-separator"> <div class="login-button-container" data-context="mobile">
+                    <a href="#login" data-page="login" class="nav-link">Iniciar Sesión</a>
+                    <a href="#registro" data-page="registro" class="nav-link">Registrarse</a> </div>
+            </nav>
+        </header>
+        
+        <main class="flex-1">
+        </main> 
+        
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-column">
+                        </div>
+                    <div class="footer-column">
+                        <h3 class="footer-title">Enlaces Rápidos</h3>
+                        <ul class="footer-links">
+                            <li><a href="#nosotros" data-page="nosotros">Sobre Nosotros</a></li>
+                            <li><a href="#catalogo" data-page="catalogo">Catálogo</a></li>
+                            <li><a href="#carrito" data-page="carrito">Carrito</a></li>
+                            <li><a href="#contacto" data-page="contacto">Contacto</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        </div>
+                    <div class="footer-column">
+                        </div>
+                </div>
+                <div class="footer-bottom">
+                    </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/main.js" type="module"></script>
+</body>
+</html>                        <a href="#" data-page="inicio" class="logo">
                             <div class="logo-icon">⚕️</div>
                             <div>
                                 <h1 class="logo-title">FarmaPlus</h1>
@@ -159,4 +243,5 @@
 </body>
 
 </html>
+
 
