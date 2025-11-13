@@ -3,11 +3,6 @@ import { loadPage } from './router.js';
 import { addToCart, updateCartItemQuantity, removeFromCart } from './cart.js';
 import { handleLogout } from './auth.js';
 
-export function handleBodyClick(event) {// js/events.js
-import { loadPage } from './router.js';
-import { addToCart, updateCartItemQuantity, removeFromCart } from './cart.js';
-import { handleLogout } from './auth.js';
-
 export function handleBodyClick(event) {
     // 1. Manejador para los enlaces de la SPA
     const pageLink = event.target.closest('[data-page]');
@@ -29,12 +24,37 @@ export function handleBodyClick(event) {
     if (cartButton) {
         const productId = cartButton.getAttribute('data-product-id');
         const action = cartButton.getAttribute('data-action');
-        let needsReload = false;
 
         if (action === 'increase' || action === 'decrease') {
             const quantityControl = cartButton.closest('.quantity-control');
             if (!quantityControl) return; 
             const quantitySpan = quantityControl.querySelector('.quantity-display');
+            if (!quantitySpan) return; 
+
+            const currentQuantity = parseInt(quantitySpan.textContent);
+
+            if (action === 'increase') {
+                updateCartItemQuantity(productId, currentQuantity + 1);
+            } else { // action === 'decrease'
+                updateCartItemQuantity(productId, currentQuantity - 1);
+            }
+
+        } else if (action === 'remove') {
+            removeFromCart(productId);
+        }
+        
+        // La lógica de recarga (needsReload) se elimina de aquí,
+        // ya que ahora se maneja dentro de updateCartItemQuantity y removeFromCart
+        // en cart.js, que llaman a reloadCartPageIfActive().
+    }
+
+    // 4. Manejador para Logout
+    const logoutButton = event.target.closest('.logout-button');
+    if (logoutButton) {
+        event.preventDefault();
+        handleLogout();
+    }
+}            const quantitySpan = quantityControl.querySelector('.quantity-display');
             if (!quantitySpan) return; 
 
             const currentQuantity = parseInt(quantitySpan.textContent);
