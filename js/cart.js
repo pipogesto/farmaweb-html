@@ -14,7 +14,6 @@ export function addToCart(productId) {
     } else {
         cart.push({ ...product, quantity: 1 });
     }
-    // No usamos setCart(cart) porque 'cart' es un array y lo estamos mutando directamente.
     
     alert(`${product.name} ha sido añadido al carrito.`);
     updateCartBadge();
@@ -66,4 +65,13 @@ export function updateCartBadge() {
 
 // Función auxiliar para recargar la página del carrito dinámicamente
 function reloadCartPageIfActive() {
-    const activeLink =
+    // Comprobamos si estamos en la página del carrito buscando un
+    // elemento que SÓLO existe en esa página (ej. la clase .cart-page).
+    const isOnCartPage = document.querySelector('.cart-page');
+    
+    if (isOnCartPage) {
+        // Si estamos en la página del carrito, la recargamos
+        // para mostrar los cambios.
+        loadPage('carrito');
+    }
+}
