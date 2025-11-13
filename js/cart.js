@@ -1,5 +1,6 @@
 // js/cart.js
 import { getCart, setCart, allProducts } from './state.js';
+import { loadPage } from './router.js'; // Import loadPage para recargar
 
 export function addToCart(productId) {
     const product = allProducts.find(p => p.id === productId);
@@ -14,7 +15,6 @@ export function addToCart(productId) {
         cart.push({ ...product, quantity: 1 });
     }
     // No usamos setCart(cart) porque 'cart' es un array y lo estamos mutando directamente.
-    // Si usáramos programación funcional (ej. cart.map), necesitaríamos setCart.
     
     alert(`${product.name} ha sido añadido al carrito.`);
     updateCartBadge();
@@ -26,22 +26,27 @@ export function updateCartItemQuantity(productId, newQuantity) {
     
     if (itemIndex > -1) {
         if (newQuantity <= 0) {
-            cart.splice(itemIndex, 1); // Elimina el item
+            // Si la cantidad es 0 o menos, eliminamos el item
+            cart.splice(itemIndex, 1);
         } else {
             cart[itemIndex].quantity = newQuantity;
         }
         updateCartBadge();
-        return true; // Indica que se necesita recargar
+        
+        // Recargar la página del carrito si estamos en ella
+        reloadCartPageIfActive();
     }
-    return false;
 }
 
 export function removeFromCart(productId) {
     let cart = getCart();
     const newCart = cart.filter(item => item.id !== productId);
-    setCart(newCart);
+    setCart(newCart); // Actualizamos el estado con el nuevo array
+    
     updateCartBadge();
-    return true; // Indica que se necesita recargar
+    
+    // Recargar la página del carrito si estamos en ella
+    reloadCartPageIfActive();
 }
 
 export function clearCart() {
@@ -58,3 +63,7 @@ export function updateCartBadge() {
     cartBadge.textContent = totalItems;
     cartBadge.classList.toggle('hidden', totalItems <= 0);
 }
+
+// Función auxiliar para recargar la página del carrito dinámicamente
+function reloadCartPageIfActive() {
+    const activeLink =
