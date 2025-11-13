@@ -1,5 +1,3 @@
-// js/utils.js
-
 export function getRatingHTML(rating) {
     let html = '';
     for (let i = 1; i <= 5; i++) {
@@ -11,7 +9,7 @@ export function getRatingHTML(rating) {
 export function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobile-menu');
     if (!mobileMenu) return;
-    mobileMenu.style.display = '';
+    mobileMenu.style.display = ''; 
     mobileMenu.classList.toggle('hidden');
 }
 
