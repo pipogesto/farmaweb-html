@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="stylefarma.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 </head>
 <body>
     <div id="root">
@@ -76,13 +77,14 @@
                 </div>
             </div>
 
-            <nav class="nav-mobile" id="mobile-menu" style="display: none;">
+            <nav class="nav-mobile hidden" id="mobile-menu">
                 <a href="#" data-page="inicio" class="nav-link active">Inicio</a>
                 <a href="#" data-page="catalogo" class="nav-link">Catálogo</a>
                 <a href="#" data-page="nosotros" class="nav-link">Nosotros</a>
                 <a href="#" data-page="contacto" class="nav-link">Contacto</a>
                 
-                <hr class="login-separator"> <div class="login-button-container" data-context="mobile">
+                <hr class="login-separator"> 
+                <div class="login-button-container" data-context="mobile">
                     <a href="#" data-page="login" class="nav-link">Iniciar Sesión</a>
                     <a href="#" data-page="registro" class="nav-link">Registrarse</a>
                 </div>
@@ -90,7 +92,8 @@
         </header>
         
         <main class="flex-1">
-        </main> 
+            </main> 
+        
         <footer class="site-footer">
             <div class="container">
                 <div class="footer-content">
@@ -130,7 +133,7 @@
                         <h3 class="footer-title">Newsletter</h3>
                         <p class="footer-description">
                             Suscríbete para recibir ofertas y consejos de salud.
-                        </p>
+                        </d>
                         <div class="newsletter-form">
                             <input type="email" id="newsletter-email" placeholder="Tu email" class="newsletter-input" />
                             <button id="newsletter-subscribe" class="button button-secondary icon-button">

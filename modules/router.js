@@ -1,5 +1,5 @@
-// modules/router.js
-// REEMPLAZA TODO EL CONTENIDO DE ESTE ARCHIVO
+
+
 
 import { currentUser } from './state.js';
 import { handleLogin } from './auth.js';
@@ -12,11 +12,9 @@ import { initContactPage } from './pages/contact.js';
 import { initAccountPage } from './pages/account.js';
 import { initAdminDashboardPage } from './pages/admin.js';
 
-const mobileMenu = document.getElementById('mobile-menu');
 
-// --- CORRECCIÓN AQUÍ ---
-// Todas las rutas de HTML ahora empiezan con "/" para
-// asegurarse de que se buscan desde la raíz del servidor.
+
+// Mapa de páginas (con las rutas raíz '/' que ya corregimos)
 const pageConfig = {
     'inicio': { html: '/pages/home.html', init: initHomePage },
     'catalogo': { html: '/pages/catalog.html', init: initCatalogPage },
@@ -37,14 +35,14 @@ export async function loadPage(page) {
         return; 
     }
 
-    // Control de acceso a la página de admin
+    // Control de acceso admin
     if (page === 'admin-dashboard' && (!currentUser || currentUser.role !== 'admin')) {
         alert('Acceso denegado. Debes ser administrador.');
         loadPage('inicio');
         return;
     }
     
-    // Control de acceso a 'Mi Cuenta'
+    // Control de acceso 'Mi Cuenta'
     if (page === 'cuenta' && !currentUser) {
         loadPage('login');
         return;
@@ -54,7 +52,6 @@ export async function loadPage(page) {
 
     try {
         if (config.html) {
-            // Esta petición fetch AHORA SÍ funcionará
             const response = await fetch(config.html);
             if (!response.ok) throw new Error(`No se pudo cargar ${config.html}`);
             main.innerHTML = await response.text();
@@ -74,11 +71,11 @@ export async function loadPage(page) {
        
         window.scrollTo(0, 0);
         updateActiveLink(page);
-        closeMobileMenu();
+        closeMobileMenu(); // Esto ahora funcionará
 
     } catch (error) {
         console.error(`Error al renderizar la página '${page}':`, error);
-        main.innerHTML = `<div class="container" style="padding: 4rem 1rem; text-align: center;"><h1>Error al cargar la página</h1><p>Revisa la consola (F12) para ver el error de 'fetch'.</p></div>`;
+        main.innerHTML = `<div class="container" style="padding: 4rem 1rem; text-align: center;"><h1>Error al cargar la página</h1><p>Revisa la consola (F12) para ver el error.</p></div>`;
     }
 }
 
@@ -88,12 +85,18 @@ function updateActiveLink(currentPage) {
     });
 }
 
-export function toggleMobileMenu() {
+// Añadimos "export" para que script.js pueda importar esta función.
+// También seleccionamos 'mobileMenu' DENTRO de la función.
+export function toggleMobileMenu() { 
+    const mobileMenu = document.getElementById('mobile-menu');
     if (!mobileMenu) return;
     mobileMenu.classList.toggle('hidden');
 }
 
+// --- CORRECCIÓN AQUÍ ---
+// Añadimos "export" para que script.js pueda importar esta función.
 export function closeMobileMenu() {
+    const mobileMenu = document.getElementById('mobile-menu');
     if (!mobileMenu) return;
     mobileMenu.classList.add('hidden');
 }

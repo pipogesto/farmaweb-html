@@ -1,7 +1,7 @@
 // script.js (Archivo principal)
-// REEMPLAZA TODO EL CONTENIDO DE ESTE ARCHIVO
+// VERSIÓN CORREGIDA - AHORA INCLUYE EL MENÚ MÓVIL
 
-import { loadPage, toggleMobileMenu, closeMobileMenu } from './modules/router.js';
+import { loadPage, toggleMobileMenu, closeMobileMenu } from './modules/router.js'; // <-- AÑADIDAS importaciones de menú
 import { updateLoginButton, handleLogout, handleLogin } from './modules/auth.js';
 import { updateCartBadge, addToCart, updateCartItemQuantity, removeFromCart, clearCart } from './modules/cart.js';
 import { handleSearch } from './modules/pages/catalog.js';
@@ -16,32 +16,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- MANEJADORES GLOBALES ---
-    // Adjuntamos los listeners al 'body' para que capturen eventos
-    // de elementos que aún no existen (como los de las páginas cargadas dinámicamente)
     document.body.addEventListener('click', handleBodyClick);
     document.body.addEventListener('submit', handleFormSubmit);
 
-    // --- LISTENERS ESTÁTICOS (para elementos que siempre están en index.html) ---
-    document.querySelector('.mobile-menu-button')?.addEventListener('click', toggleMobileMenu);
+    // --- LISTENERS ESTÁTICOS ---
+    // (El botón del menú ahora se maneja en handleBodyClick)
     document.getElementById('desktop-search-input')?.addEventListener('input', handleSearch);
     document.getElementById('mobile-search-input')?.addEventListener('input', handleSearch);
 
     // --- CARGA INICIAL ---
     updateCartBadge();
     updateLoginButton();
-    loadPage('inicio'); // Esto ahora debería funcionar
+    loadPage('inicio');
 });
 
 // --- 2. MANEJADOR DE CLICS GLOBAL (Delegación) ---
 function handleBodyClick(event) {
     const target = event.target; // El elemento exacto donde se hizo clic
 
+    // --- AÑADIDO: MANEJADOR DEL BOTÓN DE MENÚ MÓVIL ---
+    const menuButton = target.closest('.mobile-menu-button');
+    if (menuButton) {
+        event.preventDefault();
+        toggleMobileMenu(); // Llama a la función importada de router.js
+        return;
+    }
+
     // Manejador para enlaces de navegación SPA
     const pageLink = target.closest('[data-page]');
     if (pageLink) {
         event.preventDefault();
         loadPage(pageLink.getAttribute('data-page'));
-        closeMobileMenu();
+        closeMobileMenu(); // <-- AÑADIDO: Cierra el menú al navegar
         return;
     }
 
@@ -80,7 +86,7 @@ function handleBodyClick(event) {
 
 // --- 3. MANEJADOR DE SUBMITS GLOBAL (Delegación) ---
 function handleFormSubmit(event) {
-    const form = event.target; // El formulario que se envió
+    const form = event.target; 
 
     // Manejador para formulario de Login
     if (form.id === 'login-form') {
