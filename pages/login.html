@@ -1,0 +1,21 @@
+<div style="display: flex; justify-content: center; align-items: center; padding: 4rem 1rem; min-height: 70vh;">
+    <div style="background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; border: 1px solid var(--border);">
+        <h1 style="text-align: center; color: var(--primary); margin-bottom: 2rem;">Iniciar Sesión</h1>
+        <form id="login-form">
+            <div style="margin-bottom: 20px;">
+                <label for="email" style="display: block; font-weight: bold; margin-bottom: 5px;">Correo Electrónico:</label>
+                <input type="email" id="email" name="email" required style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 5px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label for="password" style="display: block; font-weight: bold; margin-bottom: 5px;">Contraseña:</label>
+                <input type="password" id="password" name="password" required style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 5px; box-sizing: border-box;">
+            </div>
+            <p id="error-message" class="hidden" style="color: var(--destructive); text-align: center; font-weight: bold; margin-bottom: 1rem;">Correo o contraseña incorrectos.</p>
+            <button type="submit" class="button button-primary w-full">Entrar</button>
+        </form>
+        <div style="text-align: center; margin-top: 20px; font-size: 0.875rem; color: var(--muted-foreground);">
+            <p style="margin-bottom: 0.5rem;"><b>Usuario:</b> cliente@email.com / <b>Pass:</b> 123</p>
+            <p><b>Admin:</b> admin@farmaplus.com / <b>Pass:</b> admin123</p>
+        </div>
+    </div>
+</div>
