@@ -1,0 +1,23 @@
+<div style="display: flex; justify-content: center; align-items: center; padding: 4rem 1rem; min-height: 70vh;">
+    <div style="background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; border: 1px solid var(--border);">
+        <h1 style="text-align: center; color: var(--primary); margin-bottom: 2rem;">Crear Cuenta</h1>
+        <form id="register-form">
+            <div style="margin-bottom: 20px;">
+                <label for="reg-name" style="display: block; font-weight: bold; margin-bottom: 5px;">Nombre Completo:</label>
+                <input type="text" id="reg-name" name="name" required style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 5px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label for="reg-email" style="display: block; font-weight: bold; margin-bottom: 5px;">Correo Electrónico:</label>
+                <input type="email" id="reg-email" name="email" required style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 5px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label for="reg-password" style="display: block; font-weight: bold; margin-bottom: 5px;">Contraseña:</label>
+                <input type="password" id="reg-password" name="password" required style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 5px; box-sizing: border-box;">
+            </div>
+            <button type="submit" class="button button-primary w-full">Registrarse</button>
+        </form>
+        <div style="text-align: center; margin-top: 20px; font-size: 0.875rem;">
+            <p>¿Ya tienes cuenta? <a href="#" data-page="login" style="color: var(--primary); text-decoration: none; font-weight: bold;">Inicia Sesión</a></p>
+        </div>
+    </div>
+</div>

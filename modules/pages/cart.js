@@ -1,7 +1,6 @@
 // modules/pages/cart.js
-// REEMPLAZA TODO EL CONTENIDO DE ESTE ARCHIVO
-
 import { cart } from '../state.js'; 
+import { SHIPPING_COST, FREE_SHIPPING_THRESHOLD } from '../config.js'; // <-- Importamos configuración
 
 export async function initCartPage(main) {
     if (!main) {
@@ -10,12 +9,10 @@ export async function initCartPage(main) {
     }
 
     if (cart.length === 0) {
-        // --- CORRECCIÓN AQUÍ ---
         const response = await fetch('/pages/cart-empty.html');
         if (!response.ok) throw new Error(`No se pudo cargar /pages/cart-empty.html`);
         main.innerHTML = await response.text();
     } else {
-        // --- CORRECCIÓN AQUÍ ---
         const response = await fetch('/pages/cart.html');
         if (!response.ok) throw new Error(`No se pudo cargar /pages/cart.html`);
         main.innerHTML = await response.text();
@@ -47,8 +44,9 @@ export async function initCartPage(main) {
         const container = document.getElementById('cart-items-container');
         if (container) container.innerHTML = itemsHTML;
 
+        // --- LÓGICA ACTUALIZADA CON CONFIG.JS ---
         const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        const shipping = subtotal >= 900 ? 0 : 99;
+        const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
         const total = subtotal + shipping;
 
         const subEl = document.getElementById('cart-subtotal');
@@ -62,11 +60,15 @@ export async function initCartPage(main) {
 
         const promoContainer = document.getElementById('cart-promo-banner-container');
         if (promoContainer) {
-            if (subtotal < 900) {
-                promoContainer.innerHTML = `<div class="promo-banner">Añade $${(900 - subtotal).toFixed(2)} más para envío gratis</div>`;
+            if (subtotal < FREE_SHIPPING_THRESHOLD) {
+                const missing = FREE_SHIPPING_THRESHOLD - subtotal;
+                promoContainer.innerHTML = `<div class="promo-banner">Añade $${missing.toFixed(2)} más para envío gratis</div>`;
             } else {
-                promoContainer.innerHTML = '';
+                promoContainer.innerHTML = `<div class="promo-banner" style="background-color: #d1fae5; color: #059669;">¡Genial! Tienes envío gratis</div>`;
             }
         }
+        
+        // Renderizamos iconos si es necesario
+        if (typeof lucide !== 'undefined') lucide.createIcons({ root: main });
     }
 }

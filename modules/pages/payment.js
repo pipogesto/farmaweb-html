@@ -1,9 +1,8 @@
 // modules/pages/payment.js
-// REEMPLAZA TODO EL CONTENIDO DE ESTE ARCHIVO
-
 import { cart } from '../state.js';
 import { clearCart } from '../cart.js'; 
 import { loadPage } from '../router.js';
+import { SHIPPING_COST, FREE_SHIPPING_THRESHOLD } from '../config.js'; // <-- Importamos configuración
 
 export async function initPaymentPage(main) {
     if (!main) {
@@ -16,14 +15,13 @@ export async function initPaymentPage(main) {
         return;
     }
     
-    // --- CORRECCIÓN AQUÍ ---
     const response = await fetch('/pages/payment.html');
     if (!response.ok) throw new Error(`No se pudo cargar /pages/payment.html`);
     main.innerHTML = await response.text();
 
-    // Calcular totales y rellenar resumen
+    // --- LÓGICA ACTUALIZADA CON CONFIG.JS ---
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const shipping = subtotal >= 900 ? 0 : 99;
+    const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
     const total = subtotal + shipping;
     
     const itemsSummaryHTML = cart.map(item => 
@@ -50,4 +48,7 @@ export async function initPaymentPage(main) {
             document.getElementById('paypal-message-section')?.classList.toggle('hidden', isCard);
         });
     });
+    
+    // Renderizamos iconos solo en el main para optimizar
+    if (typeof lucide !== 'undefined') lucide.createIcons({ root: main });
 }
