@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producto no encontrado - FarmaWeb</title>
+    <style>
+        :root {
+            --primary-color: #00b894; /* Verde farmacia moderno */
+            --secondary-color: #0984e3;
+            --text-color: #2d3436;
+            --bg-color: #f5f6fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container-404 {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            border-top: 6px solid var(--primary-color);
+        }
+
+        .icon-container svg {
+            width: 120px;
+            height: 120px;
+            fill: var(--primary-color);
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin: 0;
+            color: var(--text-color);
+            line-height: 1;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin: 10px 0 20px;
+            color: var(--text-color);
+        }
+
+        p {
+            color: #636e72;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .search-box {
+            margin-bottom: 25px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #dfe6e9;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s, background-color 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #00a884;
+            transform: translateY(-2px);
+        }
+
+        /* Animación suave del icono */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .icon-container {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-404">
+        <div class="icon-container">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19.417 6.679C20.441 7.704 21 9.066 21 10.513c0 1.448-.559 2.81-1.583 3.834L11.5 22.263l-1.996-1.996 7.917-7.917c1.328-1.328 1.328-3.486 0-4.814-1.326-1.326-3.484-1.326-4.812 0L4.693 15.453l-1.996-1.996L10.613 5.54c1.155-1.154 2.723-1.859 4.402-1.859 1.679 0 3.247.705 4.402 1.859v1.139zm-8.804 8.805l-7.917 7.917 1.996 1.996 7.917-7.917-1.996-1.996z"/>
+            </svg>
+        </div>
+
+        <h1>404</h1>
+        <h2>Dosis no encontrada</h2>
+        <p>Lo sentimos, el medicamento o producto que buscas no está disponible en nuestra estantería digital o el enlace es incorrecto.</p>
+
+        <div class="search-box">
+            <input type="text" placeholder="Busca por nombre o síntoma...">
+            <button class="btn" style="padding: 12px 20px; border-radius: 8px;">🔍</button>
+        </div>
+
+        <a href="index.html" class="btn">Volver a la Farmacia</a>
+    </div>
+
+</body>
+</html>
