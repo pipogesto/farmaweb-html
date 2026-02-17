@@ -1,31 +1,39 @@
-<div class="contact-page">
-    <div class="container">
-        <div class="section-header">
-            <h1 class="page-title">Contacto</h1>
-            <p class="section-description">¿Tienes alguna pregunta? Estamos aquí para ayudarte. Contáctanos y te responderemos lo antes posible.</p>
+<div class="container py-12">
+    <div class="grid md:grid-cols-2 gap-8 items-start">
+        
+        <div class="contact-form-side">
+            <h2 class="text-3xl font-bold mb-6 text-blue-900">Contáctanos</h2>
+            <form id="contact-form" class="space-y-4">
+                <input type="text" placeholder="Tu nombre" class="w-full p-2 border rounded shadow-sm focus:ring-2 focus:ring-blue-500 outline-none" required>
+                <input type="email" placeholder="Correo electrónico" class="w-full p-2 border rounded shadow-sm focus:ring-2 focus:ring-blue-500 outline-none" required>
+                <textarea placeholder="¿En qué podemos ayudarte?" class="w-full p-2 border rounded shadow-sm focus:ring-2 focus:ring-blue-500 outline-none" rows="4"></textarea>
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition w-full font-bold">
+                    Enviar Mensaje
+                </button>
+            </form>
         </div>
-        <div class="contact-grid">
-            <div class="contact-info-card">
-                <h3 class="summary-title">Información de Contacto</h3>
-                <div class="contact-info-list">
-                    <div class="contact-info-item"><div class="icon-wrapper blue"><i data-lucide="phone"></i></div><div><h4>Teléfono</h4><p>+55 23 69 79 40</p></div></div>
-                    <div class="contact-info-item"><div class="icon-wrapper green"><i data-lucide="mail"></i></div><div><h4>Email</h4><p>info@farmaplus.es</p></div></div>
-                    <div class="contact-info-item"><div class="icon-wrapper red"><i data-lucide="map-pin"></i></div><div><h4>Dirección</h4><p>Calle Principal 123<br>28001 Madrid, España</p></div></div>
-                    <div class="contact-info-item"><div class="icon-wrapper purple"><i data-lucide="clock"></i></div><div><h4>Horario</h4><p>L-V: 9:00-21:00 / S: 10:00-18:00</p></div></div>
-                </div>
+
+        <div class="contact-map-side">
+            <h3 class="text-xl font-semibold mb-4 text-blue-800 flex items-center gap-2">
+                <i data-lucide="map-pin"></i> Nuestra Ubicación
+            </h3>
+            
+            <div class="rounded-2xl overflow-hidden shadow-xl border-4 border-white" style="height: 400px; background-color: #eee;">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.610336214814!2d-99.1601618!3d19.4290747!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff35f5bd1563%3A0x6ad0ad0531a8bc11!2sCalle%2067%2016%2C%20Ciudad%20de%20M%C3%A9xico!5e0!3m2!1ses-419!2smx!4v1700000000000" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
-            <div class="form-section">
-                <h3>Envíanos un Mensaje</h3>
-                <form id="contact-form" style="display: flex; flex-direction: column; gap: 1rem;">
-                    <div class="form-grid">
-                        <div class="form-field"><label for="contact-name">Nombre *</label><input id="contact-name" required></div>
-                        <div class="form-field"><label for="contact-email">Email *</label><input id="contact-email" type="email" required></div>
-                    </div>
-                    <div class="form-field full-width"><label for="contact-subject">Asunto</label><input id="contact-subject"></div>
-                    <div class="form-field full-width"><label for="contact-message">Mensaje *</label><textarea id="contact-message" rows="5" required></textarea></div>
-                    <button type="submit" class="button button-primary" style="align-self: flex-start;">Enviar Mensaje</button>
-                </form>
-            </div>
+            
+            <p class="mt-4 text-gray-600 font-medium text-center md:text-left italic">
+                Calle 67 #16 duplex, Ciudad de México.
+            </p>
         </div>
+
     </div>
 </div>
