@@ -7,15 +7,13 @@
     <link rel="stylesheet" href="stylefarma.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-14K41FWMPE"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-14K41FWMPE');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-14K41FWMPE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-14K41FWMPE');
+    </script>
 </head>
 <body>
     <div id="root">
@@ -56,6 +54,10 @@
                         </div>
 
                         <div class="header-actions">
+                            <a href="admin.html" class="icon-button admin-button" title="Panel de Control" style="color: #2563eb;">
+                                <i data-lucide="layout-dashboard"></i>
+                            </a>
+                            
                             <button class="icon-button mobile-search-button">
                                 <i data-lucide="search"></i>
                             </button>
@@ -90,6 +92,9 @@
                 <a href="#" data-page="catalogo" class="nav-link">Catálogo</a>
                 <a href="#" data-page="nosotros" class="nav-link">Nosotros</a>
                 <a href="#" data-page="contacto" class="nav-link">Contacto</a>
+                <a href="admin.html" class="nav-link" style="color: #2563eb; font-weight: bold;">
+                    <i data-lucide="layout-dashboard" style="display: inline-block; vertical-align: middle; margin-right: 8px;"></i>Panel Admin
+                </a>
                 
                 <hr class="login-separator"> 
                 <div class="login-button-container" data-context="mobile">
@@ -141,7 +146,7 @@
                         <h3 class="footer-title">Newsletter</h3>
                         <p class="footer-description">
                             Suscríbete para recibir ofertas y consejos de salud.
-                        </d>
+                        </p>
                         <div class="newsletter-form">
                             <input type="email" id="newsletter-email" placeholder="Tu email" class="newsletter-input" />
                             <button id="newsletter-subscribe" class="button button-secondary icon-button">
@@ -163,6 +168,9 @@
     </div>
 
     <script src="script.js" type="module"></script>
+    <script>
+        // Inicializar iconos de Lucide para los nuevos elementos
+        lucide.createIcons();
+    </script>
 </body>
-
 </html>
