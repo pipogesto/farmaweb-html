@@ -1,38 +1,58 @@
 <div class="container py-12">
-    <div class="grid md:grid-cols-2 gap-8 items-start">
+    <div class="grid md:grid-cols-2 gap-8 items-stretch">
         
-        <div class="contact-form-side">
-            <h2 class="text-3xl font-bold mb-6 text-blue-900">Contáctanos</h2>
-            <form id="contact-form" class="space-y-4">
-                <input type="text" placeholder="Tu nombre" class="w-full p-2 border rounded shadow-sm focus:ring-2 focus:ring-blue-500 outline-none" required>
-                <input type="email" placeholder="Correo electrónico" class="w-full p-2 border rounded shadow-sm focus:ring-2 focus:ring-blue-500 outline-none" required>
-                <textarea placeholder="¿En qué podemos ayudarte?" class="w-full p-2 border rounded shadow-sm focus:ring-2 focus:ring-blue-500 outline-none" rows="4"></textarea>
-                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition w-full font-bold">
-                    Enviar Mensaje
-                </button>
-            </form>
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+            <div>
+                <h2 class="text-2xl font-bold mb-8 text-gray-800">Contáctanos</h2>
+                
+                <form id="contact-form" class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <label class="w-1/3 text-gray-600 font-medium">Tu nombre</label>
+                        <input type="text" class="w-2/3 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Nombre completo" required>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <label class="w-1/3 text-gray-600 font-medium">Correo electrónico</label>
+                        <input type="email" class="w-2/3 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="email@ejemplo.com" required>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <label class="w-1/3 text-gray-600 font-medium">Mensaje</label>
+                        <textarea class="w-2/3 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="¿En qué podemos ayudarte?" rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200">
+                        Enviar Mensaje
+                    </button>
+                </form>
+            </div>
         </div>
 
-        <div class="contact-map-side">
-            <h3 class="text-xl font-semibold mb-4 text-blue-800 flex items-center gap-2">
-                <i data-lucide="map-pin"></i> Nuestra Ubicación
-            </h3>
-            
-            <div class="rounded-2xl overflow-hidden shadow-xl border-4 border-white" style="height: 400px; background-color: #eee;">
+        <div class="flex flex-col gap-4">
+            <div class="rounded-2xl overflow-hidden shadow-xl border-4 border-white h-full min-h-[400px]">
                 <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.610336214814!2d-99.1601618!3d19.4290747!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff35f5bd1563%3A0x6ad0ad0531a8bc11!2sCalle%2067%2016%2C%20Ciudad%20de%20M%C3%A9xico!5e0!3m2!1ses-419!2smx!4v1700000000000" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3764.571477813589!2d-99.03450000000001!3d19.340000000000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1e2da6a605f63%3A0x6336e92c286e7f78!2sC.%2067%2016%2C%20Santa%20Cruz%20Meyehualco%2C%20Iztapalapa%2C%2009290%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX!5e0!3m2!1ses-419!2smx!4v1700000000000!5m2!1ses-419!2smx" 
                     width="100%" 
                     height="100%" 
                     style="border:0;" 
                     allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
+                    loading="lazy">
                 </iframe>
             </div>
             
-            <p class="mt-4 text-gray-600 font-medium text-center md:text-left italic">
-                Calle 67 #16 duplex, Ciudad de México.
-            </p>
+            <div class="bg-white p-4 rounded-xl shadow-md flex justify-between items-center border border-gray-100">
+                <div>
+                    <h4 class="font-bold text-gray-800">C. 67 16</h4>
+                    <p class="text-sm text-gray-500 italic">C. 67 16, Santa Cruz Meyehualco, Iztapalapa, 09290 CDMX</p>
+                    <a href="#" class="text-blue-600 text-sm font-medium hover:underline">Ampliar el mapa</a>
+                </div>
+                <div class="text-center">
+                    <div class="bg-blue-50 p-2 rounded-full mb-1">
+                        <i data-lucide="navigation-2" class="text-blue-600 w-6 h-6"></i>
+                    </div>
+                    <span class="text-xs font-bold text-blue-600">Cómo llegar</span>
+                </div>
+            </div>
         </div>
 
     </div>
