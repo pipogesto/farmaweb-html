@@ -1,7 +1,6 @@
 // script.js (Archivo principal)
 // VERSIÓN CORREGIDA - AHORA INCLUYE EL MENÚ MÓVIL
-
-import { loadPage, toggleMobileMenu, closeMobileMenu } from './modules/router.js'; // <-- AÑADIDAS importaciones de menú
+import { loadPage, toggleMobileMenu, closeMobileMenu } from './modules/router.js';
 import { updateLoginButton, handleLogout, handleLogin } from './modules/auth.js';
 import { updateCartBadge, addToCart, updateCartItemQuantity, removeFromCart, clearCart } from './modules/cart.js';
 import { handleSearch } from './modules/pages/catalog.js';
@@ -20,34 +19,96 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.addEventListener('submit', handleFormSubmit);
 
     // --- LISTENERS ESTÁTICOS ---
-    // (El botón del menú ahora se maneja en handleBodyClick)
     document.getElementById('desktop-search-input')?.addEventListener('input', handleSearch);
     document.getElementById('mobile-search-input')?.addEventListener('input', handleSearch);
 
     // --- CARGA INICIAL ---
     updateCartBadge();
     updateLoginButton();
+    updateCartVisibility();   // ← agregado: actualiza visibilidad del carrito al cargar
     loadPage('inicio');
 });
 
-// --- 2. MANEJADOR DE CLICS GLOBAL (Delegación) ---
-function handleBodyClick(event) {
-    const target = event.target; // El elemento exacto donde se hizo clic
-
-    // --- AÑADIDO: MANEJADOR DEL BOTÓN DE MENÚ MÓVIL ---
-    const menuButton = target.closest('.mobile-menu-button');
-    if (menuButton) {
-        event.preventDefault();
-        toggleMobileMenu(); // Llama a la función importada de router.js
+// Función para ocultar/mostrar el carrito según si el usuario es administrador
+function updateCartVisibility() {
+    const cartButton = document.getElementById('cartButton');
+    if (!cartButton) {
+        console.warn('No se encontró #cartButton → verifica que exista id="cartButton" en index.html');
         return;
     }
 
-    // Manejador para enlaces de navegación SPA
-    const pageLink = target.closest('[data-page]');
-    if (pageLink) {
+    // Depuración: muestra qué usuario está detectado
+    console.log('[CartVisibility] currentUser:', currentUser);
+
+    if (!currentUser) {
+        // Sin sesión → mostrar carrito
+        console.log('[CartVisibility] Sin usuario → MOSTRAR carrito');
+        cartButton.style.display = 'inline-flex';
+        return;
+    }
+
+    // Condición para detectar admin → AJUSTA según tu objeto real
+    // Ejemplos comunes (descomenta o combina según lo que veas en console.log(currentUser))
+    const esAdmin = 
+        currentUser.rol === 'admin' ||
+        currentUser.role === 'admin' ||
+        currentUser.tipo === 'administrador' ||
+        currentUser.isAdmin === true ||
+        currentUser.username?.toLowerCase() === 'admin' ||
+        currentUser.username?.toLowerCase().includes('admin');
+
+    if (esAdmin) {
+        console.log('[CartVisibility] ADMIN detectado → OCULTAR carrito');
+        cartButton.style.display = 'none';
+    } else {
+        console.log('[CartVisibility] Usuario normal → MOSTRAR carrito');
+        cartButton.style.display = 'inline-flex';
+    }
+}
+
+// Workaround temporal: detectar cambios en localStorage (útil si login/logout está en otro módulo)
+const originalSetItem = localStorage.setItem;
+localStorage.setItem = function(key, value) {
+    originalSetItem.apply(this, arguments);
+    if (key === 'currentUser') {
+        console.log('[Storage override] currentUser cambiado → actualizando visibilidad carrito');
+        updateCartVisibility();
+    }
+};
+
+const originalRemoveItem = localStorage.removeItem;
+localStorage.removeItem = function(key) {
+    originalRemoveItem.apply(this, arguments);
+    if (key === 'currentUser') {
+        console.log('[Storage override] currentUser removido → actualizando visibilidad carrito');
+        updateCartVisibility();
+    }
+};
+
+// --- MANEJADORES DE EVENTOS DELEGADOS (el resto de tu código) ---
+
+// Manejador para clics en el body (delegación de eventos)
+function handleBodyClick(event) {
+    const target = event.target;
+
+    // Toggle menú móvil
+    if (target.closest('.mobile-menu-button')) {
+        toggleMobileMenu();
+        return;
+    }
+
+    // Cerrar menú móvil al hacer clic fuera
+    if (!target.closest('.mobile-menu') && !target.closest('.mobile-menu-button')) {
+        closeMobileMenu();
+    }
+
+    // Navegación entre páginas
+    const link = target.closest('[data-page]');
+    if (link) {
         event.preventDefault();
-        loadPage(pageLink.getAttribute('data-page'));
-        closeMobileMenu(); // <-- AÑADIDO: Cierra el menú al navegar
+        const page = link.getAttribute('data-page');
+        loadPage(page);
+        closeMobileMenu();
         return;
     }
 
@@ -66,7 +127,6 @@ function handleBodyClick(event) {
         const productId = cartButton.getAttribute('data-product-id');
         const action = cartButton.getAttribute('data-action');
         const item = cart.find(i => i.id === productId);
-
         if (item) {
             if (action === 'increase') updateCartItemQuantity(productId, item.quantity + 1);
             if (action === 'decrease') updateCartItemQuantity(productId, item.quantity - 1);
@@ -74,54 +134,20 @@ function handleBodyClick(event) {
         }
         return;
     }
-    
-    // Manejador para botón de Logout
-    const logoutButton = target.closest('.logout-button');
-    if (logoutButton) {
-        event.preventDefault();
+
+    // Logout
+    if (target.closest('#logout-btn') || target.id === 'logout') {
         handleLogout();
         return;
     }
 }
 
-// --- 3. MANEJADOR DE SUBMITS GLOBAL (Delegación) ---
+// Manejador para formularios (login, etc.)
 function handleFormSubmit(event) {
-    const form = event.target; 
-
-    // Manejador para formulario de Login
+    const form = event.target;
     if (form.id === 'login-form') {
         event.preventDefault();
         handleLogin(event);
-        return;
     }
-
-    // Manejador para formulario de Contacto
-    if (form.id === 'contact-form') {
-        event.preventDefault();
-        alert('Mensaje enviado con éxito. (Simulación)');
-        form.reset();
-        return;
-    }
-
-    // Manejador para formulario de Info Personal (Mi Cuenta)
-    if (form.id === 'personal-info-form') {
-        event.preventDefault();
-        const newNameInput = form.querySelector('#acc-name');
-        if (newNameInput && currentUser) {
-            currentUser.name = newNameInput.value;
-            alert('Información actualizada con éxito.');
-            updateLoginButton();
-            loadPage('cuenta');
-        }
-        return;
-    }
-
-    // Manejador para formulario de Pago
-    if (form.id === 'payment-form') {
-        event.preventDefault();
-        alert('¡Pedido realizado con éxito! (Simulación)');
-        clearCart();
-        loadPage('orden-completa');
-        return;
-    }
+    // Puedes agregar más formularios aquí si es necesario
 }
