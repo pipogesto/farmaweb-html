@@ -1,6 +1,3 @@
-
-
-
 import { currentUser } from './state.js';
 import { handleLogin } from './auth.js';
 import { initHomePage } from './pages/home.js';
@@ -12,9 +9,7 @@ import { initContactPage } from './pages/contact.js';
 import { initAccountPage } from './pages/account.js';
 import { initAdminDashboardPage } from './pages/admin.js';
 
-
-
-// Mapa de páginas (con las rutas raíz '/' que ya corregimos)
+// Mapa de páginas
 const pageConfig = {
     'inicio': { html: '/pages/home.html', init: initHomePage },
     'catalogo': { html: '/pages/catalog.html', init: initCatalogPage },
@@ -33,6 +28,12 @@ export async function loadPage(page) {
     if (!main) {
         console.error("Error CRÍTICO: Elemento 'main' no encontrado.");
         return; 
+    }
+
+    // --- CAMBIO PARA EL CARRITO DINÁMICO ---
+    // Si un admin intenta entrar al carrito, lo mandamos a sus estadísticas
+    if (page === 'carrito' && currentUser && currentUser.role === 'admin') {
+        page = 'admin-dashboard';
     }
 
     // Control de acceso admin
@@ -71,7 +72,7 @@ export async function loadPage(page) {
        
         window.scrollTo(0, 0);
         updateActiveLink(page);
-        closeMobileMenu(); // Esto ahora funcionará
+        closeMobileMenu();
 
     } catch (error) {
         console.error(`Error al renderizar la página '${page}':`, error);
@@ -85,16 +86,12 @@ function updateActiveLink(currentPage) {
     });
 }
 
-// Añadimos "export" para que script.js pueda importar esta función.
-// También seleccionamos 'mobileMenu' DENTRO de la función.
 export function toggleMobileMenu() { 
     const mobileMenu = document.getElementById('mobile-menu');
     if (!mobileMenu) return;
     mobileMenu.classList.toggle('hidden');
 }
 
-// --- CORRECCIÓN AQUÍ ---
-// Añadimos "export" para que script.js pueda importar esta función.
 export function closeMobileMenu() {
     const mobileMenu = document.getElementById('mobile-menu');
     if (!mobileMenu) return;
