@@ -40,14 +40,16 @@ export function updateCartButtonForRole() {
     // Detectar si es admin (revisando ambas posibilidades de nombre de propiedad)
     const isAdmin = currentUser && (currentUser.rol === 'admin' || currentUser.role === 'admin' || currentUser.isAdmin === true);
 
+   // --- DENTRO DE LA FUNCIÓN updateCartButtonForRole ---
+
     if (isAdmin) {
-        // MODO ADMINISTRADOR → Usa el sistema SPA para cargar el dashboard
-        cartLink.setAttribute('data-page', 'admin-dashboard');
+        // MODO ADMINISTRADOR → Ahora apunta a 'admin-stats'
+        cartLink.setAttribute('data-page', 'admin-stats'); // <--- CAMBIA ESTO
         cartLink.setAttribute('href', '#'); 
         cartIcon.setAttribute('data-lucide', 'bar-chart-3');
         cartLink.setAttribute('title', 'Estadísticas de Ventas');
         
-        // Cambiamos el color del círculo (badge) a verde
+        // El resto se queda igual...
         const badge = cartLink.querySelector('.cart-badge') || document.querySelector('.cart-badge');
         if (badge) badge.style.backgroundColor = '#10b981'; 
     } else {
@@ -147,3 +149,4 @@ async function handleFormSubmit(event) {
         return;
     }
 }
+
