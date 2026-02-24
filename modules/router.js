@@ -18,6 +18,10 @@ const pageConfig = {
     'login': { html: '/pages/login.html', init: null }, 
     'cuenta': { html: '/pages/cuenta.html', init: initAccountPage },
     'admin-dashboard': { html: '/pages/admin-dashboard.html', init: initAdminDashboardPage },
+    
+    // --- NUEVA RUTA DE ESTADÍSTICAS AQUÍ ---
+    'admin-stats': { html: '/pages/admin-stats.html', init: null }, 
+    
     'orden-completa': { html: '/pages/order-complete.html', init: initOrderCompletePage },
     'carrito': { html: null, init: initCartPage },
     'pago': { html: null, init: initPaymentPage },
@@ -32,12 +36,14 @@ export async function loadPage(page) {
 
     // --- CAMBIO PARA EL CARRITO DINÁMICO ---
     // Si un admin intenta entrar al carrito, lo mandamos a sus estadísticas
+    // También permitimos que entre directamente a admin-stats si viene del botón de gráficas
     if (page === 'carrito' && currentUser && currentUser.role === 'admin') {
-        page = 'admin-dashboard';
+        page = 'admin-stats'; // Cambiamos a stats para que vea las ventas directamente
     }
 
-    // Control de acceso admin
-    if (page === 'admin-dashboard' && (!currentUser || currentUser.role !== 'admin')) {
+    // Control de acceso admin (protegemos tanto el dashboard como las stats)
+    const adminPages = ['admin-dashboard', 'admin-stats'];
+    if (adminPages.includes(page) && (!currentUser || currentUser.role !== 'admin')) {
         alert('Acceso denegado. Debes ser administrador.');
         loadPage('inicio');
         return;
