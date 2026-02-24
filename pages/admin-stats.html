@@ -1,70 +1,116 @@
 <div class="container mx-auto py-8 px-4">
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-slate-800">Estadísticas de Ventas</h1>
-            <p class="text-slate-500">Monitoreo de ingresos y procesos de compra</p>
+            <h1 class="text-3xl font-bold text-slate-800">Reporte de Ventas Online</h1>
+            <p class="text-slate-500 font-medium">Panel de monitoreo financiero y logístico</p>
         </div>
-        <div class="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg font-semibold border border-blue-100">
-            Actualizado: Hoy
+        <div class="flex gap-2">
+            <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Sistema Activo</span>
+            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Febrero 2026</span>
         </div>
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">Ventas Totales</p>
-            <p class="text-3xl font-black text-slate-800 mt-1">$128,450.00</p>
-            <span class="text-emerald-500 text-sm font-bold">↑ 12% vs mes anterior</span>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-2 bg-blue-50 rounded-lg">
+                    <i data-lucide="dollar-sign" class="text-blue-600"></i>
+                </div>
+                <span class="text-emerald-500 text-xs font-bold">+15.4%</span>
+            </div>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Ingresos Totales</p>
+            <p class="text-3xl font-black text-slate-800 mt-1">$142,500.00</p>
         </div>
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">En Proceso de Compra</p>
-            <p class="text-3xl font-black text-orange-500 mt-1">18</p>
-            <span class="text-slate-400 text-sm italic">Pendientes de pago</span>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-2 bg-purple-50 rounded-lg">
+                    <i data-lucide="calendar" class="text-purple-600"></i>
+                </div>
+            </div>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Ventas del Mes</p>
+            <p class="text-3xl font-black text-slate-800 mt-1">$38,200.00</p>
         </div>
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">Ventas de la Semana</p>
-            <p class="text-3xl font-black text-blue-600 mt-1">$14,200.00</p>
-            <span class="text-blue-400 text-sm italic">7 días activos</span>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-2 bg-emerald-50 rounded-lg">
+                    <i data-lucide="trending-up" class="text-emerald-600"></i>
+                </div>
+            </div>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Esta Semana</p>
+            <p class="text-3xl font-black text-slate-800 mt-1">$9,450.00</p>
         </div>
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">Ventas del Mes</p>
-            <p class="text-3xl font-black text-purple-600 mt-1">$45,900.00</p>
-            <span class="text-slate-400 text-sm italic">Febrero 2024</span>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+            <div class="flex justify-between items-start mb-4">
+                <div class="p-2 bg-orange-50 rounded-lg">
+                    <i data-lucide="shopping-bag" class="text-orange-600"></i>
+                </div>
+                <span class="bg-orange-500 text-white text-[10px] px-2 py-0.5 rounded-full animate-pulse">En curso</span>
+            </div>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">En Proceso</p>
+            <p class="text-3xl font-black text-slate-800 mt-1">14 Pedidos</p>
         </div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div class="p-6 border-b border-gray-50 flex justify-between items-center">
-            <h3 class="font-bold text-slate-700 uppercase text-sm tracking-widest">Pedidos en tiempo real</h3>
-            <button class="text-blue-600 text-sm font-bold">Ver reporte completo</button>
+    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+        <div class="p-6 border-b border-slate-50 flex flex-col md:flex-row justify-between items-center gap-4">
+            <h3 class="font-black text-slate-700 uppercase text-sm tracking-widest">Detalle de Ventas Recientes</h3>
+            <div class="flex gap-2">
+                <button class="bg-slate-100 text-slate-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-200 transition-colors">Exportar PDF</button>
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all">Ver Todo</button>
+            </div>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
-                    <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase tracking-tighter">
-                        <th class="p-4">Cliente / ID</th>
-                        <th class="p-4">Productos</th>
-                        <th class="p-4">Monto</th>
-                        <th class="p-4">Estado Logístico</th>
+                    <tr class="bg-slate-50/50 text-slate-400 text-[10px] font-black uppercase tracking-widest">
+                        <th class="p-5">ID / Fecha</th>
+                        <th class="p-5">Cliente</th>
+                        <th class="p-5">Monto</th>
+                        <th class="p-5">Estado</th>
+                        <th class="p-5">Acción</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-50">
-                    <tr>
-                        <td class="p-4">
-                            <p class="font-bold text-slate-700 text-sm">Juan Pérez</p>
-                            <p class="text-xs text-slate-400">#ORD-5542</p>
+                <tbody class="divide-y divide-slate-50">
+                    <tr class="hover:bg-slate-50/80 transition-colors group">
+                        <td class="p-5">
+                            <p class="font-bold text-slate-700 text-sm">#FW-9821</p>
+                            <p class="text-[10px] text-slate-400 uppercase font-medium">Hace 15 min</p>
                         </td>
-                        <td class="p-4 text-sm text-slate-600">Paracetamol (x3), Alcohol Gel</td>
-                        <td class="p-4 font-bold text-slate-700">$485.00</td>
-                        <td class="p-4"><span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-[10px] font-black uppercase">Pago Pendiente</span></td>
+                        <td class="p-5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xs">RC</div>
+                                <p class="font-bold text-slate-700 text-sm">Roberto Cano</p>
+                            </div>
+                        </td>
+                        <td class="p-5 font-black text-slate-800 text-sm">$1,250.00</td>
+                        <td class="p-5">
+                            <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-lg text-[10px] font-black uppercase ring-1 ring-orange-200">En Proceso</span>
+                        </td>
+                        <td class="p-5">
+                            <button class="text-blue-600 hover:underline font-bold text-xs uppercase tracking-tighter">Detalles</button>
+                        </td>
                     </tr>
-                    <tr>
-                        <td class="p-4">
-                            <p class="font-bold text-slate-700 text-sm">Maria Sosa</p>
-                            <p class="text-xs text-slate-400">#ORD-5541</p>
+                    <tr class="hover:bg-slate-50/80 transition-colors group">
+                        <td class="p-5">
+                            <p class="font-bold text-slate-700 text-sm">#FW-9820</p>
+                            <p class="text-[10px] text-slate-400 uppercase font-medium">Hace 2 horas</p>
                         </td>
-                        <td class="p-4 text-sm text-slate-600">Multivitamínico A-Z</td>
-                        <td class="p-4 font-bold text-slate-700">$320.00</td>
-                        <td class="p-4"><span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-[10px] font-black uppercase">Enviado</span></td>
+                        <td class="p-5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs">AM</div>
+                                <p class="font-bold text-slate-700 text-sm">Ana Martínez</p>
+                            </div>
+                        </td>
+                        <td class="p-5 font-black text-slate-800 text-sm">$480.00</td>
+                        <td class="p-5">
+                            <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-lg text-[10px] font-black uppercase ring-1 ring-emerald-200">Vendido</span>
+                        </td>
+                        <td class="p-5">
+                            <button class="text-blue-600 hover:underline font-bold text-xs uppercase tracking-tighter">Detalles</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
