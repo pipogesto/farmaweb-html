@@ -1,0 +1,73 @@
+<div class="container mx-auto py-8 px-4">
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-800">Estadísticas de Ventas</h1>
+            <p class="text-slate-500">Monitoreo de ingresos y procesos de compra</p>
+        </div>
+        <div class="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg font-semibold border border-blue-100">
+            Actualizado: Hoy
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">Ventas Totales</p>
+            <p class="text-3xl font-black text-slate-800 mt-1">$128,450.00</p>
+            <span class="text-emerald-500 text-sm font-bold">↑ 12% vs mes anterior</span>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">En Proceso de Compra</p>
+            <p class="text-3xl font-black text-orange-500 mt-1">18</p>
+            <span class="text-slate-400 text-sm italic">Pendientes de pago</span>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">Ventas de la Semana</p>
+            <p class="text-3xl font-black text-blue-600 mt-1">$14,200.00</p>
+            <span class="text-blue-400 text-sm italic">7 días activos</span>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">Ventas del Mes</p>
+            <p class="text-3xl font-black text-purple-600 mt-1">$45,900.00</p>
+            <span class="text-slate-400 text-sm italic">Febrero 2024</span>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="p-6 border-b border-gray-50 flex justify-between items-center">
+            <h3 class="font-bold text-slate-700 uppercase text-sm tracking-widest">Pedidos en tiempo real</h3>
+            <button class="text-blue-600 text-sm font-bold">Ver reporte completo</button>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase tracking-tighter">
+                        <th class="p-4">Cliente / ID</th>
+                        <th class="p-4">Productos</th>
+                        <th class="p-4">Monto</th>
+                        <th class="p-4">Estado Logístico</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                    <tr>
+                        <td class="p-4">
+                            <p class="font-bold text-slate-700 text-sm">Juan Pérez</p>
+                            <p class="text-xs text-slate-400">#ORD-5542</p>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600">Paracetamol (x3), Alcohol Gel</td>
+                        <td class="p-4 font-bold text-slate-700">$485.00</td>
+                        <td class="p-4"><span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-[10px] font-black uppercase">Pago Pendiente</span></td>
+                    </tr>
+                    <tr>
+                        <td class="p-4">
+                            <p class="font-bold text-slate-700 text-sm">Maria Sosa</p>
+                            <p class="text-xs text-slate-400">#ORD-5541</p>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600">Multivitamínico A-Z</td>
+                        <td class="p-4 font-bold text-slate-700">$320.00</td>
+                        <td class="p-4"><span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-[10px] font-black uppercase">Enviado</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
