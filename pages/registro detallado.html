@@ -1,0 +1,50 @@
+<div style="display: flex; justify-content: center; align-items: center; padding: 3rem 1rem; background-color: #f8fafc;">
+    <div style="background: #fff; padding: 40px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 600px; border: 1px solid #e2e8f0;">
+        <h2 style="text-align: center; color: #1e293b; margin-bottom: 1.5rem; font-weight: 800;">Registro de Nuevo Usuario</h2>
+        <p style="text-align: center; color: #64748b; margin-bottom: 2rem; font-size: 0.9rem;">Completa tu perfil para empezar a comprar en FarmaPlus.</p>
+
+        <form id="formRegistroCompleto" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            
+            <div style="grid-column: span 2;">
+                <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 5px;">Nombre y Apellidos:</label>
+                <input type="text" id="regFullname" required style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; outline: none;">
+            </div>
+
+            <div>
+                <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 5px;">Teléfono:</label>
+                <input type="tel" id="regPhone" required style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px;">
+            </div>
+            <div>
+                <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 5px;">Fecha de Nacimiento:</label>
+                <input type="date" id="regBirth" required style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px;">
+            </div>
+
+            <div style="grid-column: span 2;">
+                <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 5px;">Dirección de entrega:</label>
+                <input type="text" id="regAddress" required style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px;">
+            </div>
+
+            <div style="grid-column: span 2;">
+                <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 5px;">Correo Electrónico:</label>
+                <input type="email" id="regEmail" required style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px;">
+            </div>
+            <div style="grid-column: span 2;">
+                <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 5px;">Contraseña:</label>
+                <input type="password" id="regPass" required style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px;">
+            </div>
+
+            <div style="grid-column: span 2; background: #f1f5f9; padding: 15px; border-radius: 12px; margin-top: 10px;">
+                <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #475569; margin-bottom: 10px;">Información de Pago (Débito/Crédito):</label>
+                <input type="text" id="regCard" placeholder="0000 0000 0000 0000" maxlength="16" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px;">
+            </div>
+
+            <button type="submit" style="grid-column: span 2; background: #2563eb; color: white; padding: 15px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 20px;">
+                Finalizar Registro
+            </button>
+
+            <button type="button" data-page="login" style="grid-column: span 2; background: transparent; color: #64748b; border: none; cursor: pointer; font-size: 0.8rem;">
+                Ya tengo cuenta, volver al login
+            </button>
+        </form>
+    </div>
+</div>
