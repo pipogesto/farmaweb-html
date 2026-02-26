@@ -1,6 +1,7 @@
 <div style="display: flex; justify-content: center; align-items: center; padding: 4rem 1rem; min-height: 70vh;">
     <div style="background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; border: 1px solid var(--border);">
         <h1 style="text-align: center; color: var(--primary); margin-bottom: 2rem;">Iniciar Sesión</h1>
+        
         <form id="login-form">
             <div style="margin-bottom: 20px;">
                 <label for="email" style="display: block; font-weight: bold; margin-bottom: 5px;">Correo Electrónico:</label>
@@ -11,10 +12,19 @@
                 <input type="password" id="password" name="password" required style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 5px; box-sizing: border-box;">
             </div>
             <p id="error-message" class="hidden" style="color: var(--destructive); text-align: center; font-weight: bold; margin-bottom: 1rem;">Correo o contraseña incorrectos.</p>
+            
             <button type="submit" class="button button-primary w-full">Entrar</button>
         </form>
-        <div style="text-align: center; margin-top: 20px; font-size: 0.875rem; color: var(--muted-foreground);">
+
+        <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee;">
+            <p style="margin-bottom: 15px; color: #666; font-size: 0.9rem;">¿Eres nuevo en FarmaPlus?</p>
+            <button 
+                type="button" 
+                data-page="registro-detallado" 
+                class="button button-outline w-full" 
+                style="border: 2px solid var(--primary); color: var(--primary); font-weight: bold;">
+                Registrar nuevo usuario
+            </button>
         </div>
     </div>
-
 </div>
