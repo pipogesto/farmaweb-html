@@ -21,10 +21,9 @@ const pageConfig = {
     
     // --- NUEVA RUTA DE ESTADÍSTICAS AQUÍ ---
     'admin-stats': { html: '/pages/admin-stats.html', init: null }, 
+    'registro-detallado': { html: '/pages/registro-detallado.html', init: null },
     
     'orden-completa': { html: '/pages/order-complete.html', init: initOrderCompletePage },
-    'carrito': { html: null, init: initCartPage },
-    'pago': { html: null, init: initPaymentPage },
 };
 
 export async function loadPage(page) {
@@ -103,3 +102,4 @@ export function closeMobileMenu() {
     if (!mobileMenu) return;
     mobileMenu.classList.add('hidden');
 }
+
