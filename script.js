@@ -141,6 +141,37 @@ async function handleFormSubmit(event) {
         return;
     }
 
+    if (form.id === 'formRegistroCompleto') {
+        event.preventDefault();
+        
+        const nuevoUsuario = {
+            name: document.getElementById('regFullname').value,
+            email: document.getElementById('regEmail').value,
+            password: document.getElementById('regPass').value,
+            role: document.getElementById('regRole') ? document.getElementById('regRole').value : 'user', 
+            detalles: {
+                telefono: document.getElementById('regPhone').value,
+                direccion: document.getElementById('regAddress').value,
+                nacimiento: document.getElementById('regBirth').value,
+                tarjeta: document.getElementById('regCard').value
+            }
+        };
+
+        const usuariosExistentes = JSON.parse(localStorage.getItem('users')) || [];
+        
+        if (usuariosExistentes.some(u => u.email === nuevoUsuario.email)) {
+            alert('Este correo electrónico ya está registrado.');
+            return;
+        }
+
+        usuariosExistentes.push(nuevoUsuario);
+        localStorage.setItem('users', JSON.stringify(usuariosExistentes));
+
+        alert('¡Registro exitoso! Ahora puedes iniciar sesión con tus credenciales.');
+        loadPage('login'); 
+        return;
+    }
+
     if (form.id === 'payment-form') {
         event.preventDefault();
         alert('¡Pedido realizado con éxito!');
@@ -149,4 +180,5 @@ async function handleFormSubmit(event) {
         return;
     }
 }
+
 
