@@ -6,13 +6,24 @@ export function handleLogin(event) {
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
-    const user = allUsers.find(u => u.email === email && u.password === password);
+
+    // --- MODIFICACIÓN AQUÍ: Buscar en ambos lugares ---
+    // 1. Usuarios del localStorage (los nuevos registrados)
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+    
+    // 2. Unimos con los usuarios de data.js
+    const combinedUsers = [...allUsers, ...storedUsers];
+
+    // 3. Buscamos la coincidencia
+    const user = combinedUsers.find(u => u.email === email && u.password === password);
 
     if (user) {
         setCurrentUser(user);
-        alert(`Bienvenido, ${currentUser.name}`);
+        // Usamos user.name porque currentUser a veces tarda un milisegundo en actualizarse
+        alert(`Bienvenido, ${user.name}`); 
         updateLoginButton();
-        if (currentUser.role === 'admin') {
+        
+        if (user.role === 'admin') {
             loadPage('admin-dashboard');
         } else {
             loadPage('inicio');
@@ -60,7 +71,7 @@ export function updateLoginButton() {
     } else {
         const desktopHtml = `<a href="#" data-page="login" class="login-button"><i data-lucide="user"></i><span>Iniciar Sesión</span></a>`;
         const mobileHtml = `<a href="#" data-page="login" class="nav-link">Iniciar Sesión</a>
-                            <a href="#" data-page="registro" class="nav-link">Registrarse</a>`;
+                            <a href="#" data-page="registro-detallado" class="nav-link">Registrarse</a>`;
         
         loginContainers.forEach(container => {
             if (container.dataset.context === "mobile") {
@@ -73,5 +84,5 @@ export function updateLoginButton() {
         if (mobileSeparator) mobileSeparator.classList.remove('hidden');
     }
 
-    lucide.createIcons();
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 }
