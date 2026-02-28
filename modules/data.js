@@ -2,7 +2,6 @@ export const allUsers = [
     { email: "cliente@email.com", password: "123", role: "user", name: "Juan Cliente" },
     { email: "admin@farmaplus.com", password: "admin123", role: "admin", name: "Admin FarmaPlus" } // Credenciales actualizadas
 ];
-
 export const allProducts = [
     { id: "1", name: "Paracetamol 500mg", description: "Analgésico y antipirético.", price: 99, image: "/imagenes/paracetamol.png", rating: 5, badge: "-20%", category: "medicamentos" },
     { id: "2", name: "Ibuprofeno 400mg", description: "Antiinflamatorio no esteroideo.", price: 130, image: "/imagenes/ibuprofeno.png", rating: 5, category: "medicamentos" },
@@ -14,4 +13,5 @@ export const allProducts = [
     { id: "20", name: "Tensiómetro Digital", description: "Medición automática.", price: 699, image: "imagenes/tensiometro.png", rating: 5, category: "primeros-auxilios" }
 
 ];
+
 
