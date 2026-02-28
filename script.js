@@ -181,4 +181,12 @@ async function handleFormSubmit(event) {
     }
 }
 
+import { auth } from './módulos/auth.js';
+
+// Ejecutar protección de rutas inmediatamente
+auth.protectRoute();
+
+console.log("Farmaweb inicializada con seguridad.");
+
+
 
