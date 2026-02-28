@@ -86,3 +86,31 @@ export function updateLoginButton() {
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }
+
+import { ADMIN_SECRET } from './config.js';
+
+export const auth = {
+    // Función para verificar si el usuario es Admin
+    isAdmin: () => {
+        const session = localStorage.getItem('farma_session');
+        return session === ADMIN_SECRET;
+    },
+
+    // Middleware de protección
+    protectRoute: () => {
+        const path = window.location.pathname;
+        if (path.includes('/páginas/admin') && !auth.isAdmin()) {
+            alert("Acceso denegado. Se requiere perfil de administrador.");
+            window.location.href = '/index.html'; // Redirige al inicio
+        }
+    },
+
+    login: (password) => {
+        if (password === "admin123") { // Password de ejemplo
+            localStorage.setItem('farma_session', ADMIN_SECRET);
+            return true;
+        }
+        return false;
+    }
+};
+
