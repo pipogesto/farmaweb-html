@@ -1,9 +1,10 @@
-// script.js (Archivo principal)
-import { loadPage, toggleMobileMenu, closeMobileMenu } from './modules/router.js';
-import { updateLoginButton, handleLogout, handleLogin } from './modules/auth.js';
-import { updateCartBadge, addToCart, updateCartItemQuantity, removeFromCart, clearCart } from './modules/cart.js';
-import { handleSearch } from './modules/pages/catalog.js';
-import { cart, currentUser } from './modules/state.js';
+// script.js (Archivo principal - CORREGIDO)
+// Se cambió la ruta de './modules/' a './módulos/' para coincidir con tus carpetas reales
+import { loadPage, toggleMobileMenu, closeMobileMenu } from './módulos/router.js';
+import { updateLoginButton, handleLogout, handleLogin } from './módulos/auth.js';
+import { updateCartBadge, addToCart, updateCartItemQuantity, removeFromCart, clearCart } from './módulos/cart.js';
+import { handleSearch } from './módulos/pages/catalog.js';
+import { cart, currentUser } from './módulos/state.js';
 
 // --- 1. INICIALIZACIÓN ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -37,19 +38,16 @@ export function updateCartButtonForRole() {
     
     if (!cartLink || !cartIcon) return;
 
-    // Detectar si es admin (revisando ambas posibilidades de nombre de propiedad)
+    // Detectar si es admin
     const isAdmin = currentUser && (currentUser.rol === 'admin' || currentUser.role === 'admin' || currentUser.isAdmin === true);
-
-   // --- DENTRO DE LA FUNCIÓN updateCartButtonForRole ---
 
     if (isAdmin) {
         // MODO ADMINISTRADOR → Ahora apunta a 'admin-stats'
-        cartLink.setAttribute('data-page', 'admin-stats'); // <--- CAMBIA ESTO
+        cartLink.setAttribute('data-page', 'admin-stats');
         cartLink.setAttribute('href', '#'); 
         cartIcon.setAttribute('data-lucide', 'bar-chart-3');
         cartLink.setAttribute('title', 'Estadísticas de Ventas');
         
-        // El resto se queda igual...
         const badge = cartLink.querySelector('.cart-badge') || document.querySelector('.cart-badge');
         if (badge) badge.style.backgroundColor = '#10b981'; 
     } else {
@@ -59,7 +57,6 @@ export function updateCartButtonForRole() {
         cartIcon.setAttribute('data-lucide', 'shopping-cart');
         cartLink.setAttribute('title', 'Carrito');
         
-        // Color normal del carrito
         const badge = cartLink.querySelector('.cart-badge') || document.querySelector('.cart-badge');
         if (badge) badge.style.backgroundColor = ''; 
     }
@@ -80,11 +77,20 @@ function handleBodyClick(event) {
         return;
     }
 
-    // Navegación SPA (Aquí es donde entra el admin-dashboard ahora)
+    // Navegación SPA
     const pageLink = target.closest('[data-page]');
     if (pageLink) {
         event.preventDefault();
         const page = pageLink.getAttribute('data-page');
+
+        // --- PROTECCIÓN DE RUTA (Requisito de rúbrica) ---
+        // Si la página es de admin y el usuario no tiene rol admin, bloqueamos.
+        const isAdmin = currentUser && (currentUser.rol === 'admin' || currentUser.role === 'admin');
+        if (page.includes('admin') && !isAdmin) {
+            alert("Acceso restringido: Se requiere perfil de administrador.");
+            return;
+        }
+
         loadPage(page);
         window.location.hash = page;
         closeMobileMenu();
@@ -118,7 +124,7 @@ function handleBodyClick(event) {
     if (target.closest('.logout-button')) {
         event.preventDefault();
         handleLogout();
-        updateCartButtonForRole(); // Vuelve el botón a estado "carrito"
+        updateCartButtonForRole(); 
         return;
     }
 }
@@ -130,7 +136,7 @@ async function handleFormSubmit(event) {
     if (form.id === 'login-form') {
         event.preventDefault();
         await handleLogin(event);
-        updateCartButtonForRole(); // Activa el modo admin tras login exitoso
+        updateCartButtonForRole(); 
         return;
     }
 
@@ -180,7 +186,3 @@ async function handleFormSubmit(event) {
         return;
     }
 }
-
-
-
-
