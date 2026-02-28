@@ -1,10 +1,10 @@
 // script.js (Archivo principal - CORREGIDO)
 // Se cambió la ruta de './modules/' a './módulos/' para coincidir con tus carpetas reales
-import { loadPage, toggleMobileMenu, closeMobileMenu } from './módulos/router.js';
-import { updateLoginButton, handleLogout, handleLogin } from './módulos/auth.js';
-import { updateCartBadge, addToCart, updateCartItemQuantity, removeFromCart, clearCart } from './módulos/cart.js';
-import { handleSearch } from './módulos/pages/catalog.js';
-import { cart, currentUser } from './módulos/state.js';
+import { loadPage, toggleMobileMenu, closeMobileMenu } from './modules/router.js';
+import { updateLoginButton, handleLogout, handleLogin } from './modules/auth.js';
+import { updateCartBadge, addToCart, updateCartItemQuantity, removeFromCart, clearCart } from './modules/cart.js';
+import { handleSearch } from './modules/pages/catalog.js';
+import { cart, currentUser } from './modules/state.js';
 
 // --- 1. INICIALIZACIÓN ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -186,3 +186,4 @@ async function handleFormSubmit(event) {
         return;
     }
 }
+
