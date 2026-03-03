@@ -22,12 +22,20 @@ const inventario = [
         price: 1200, 
         description: "Refuerza tu sistema inmunológico.",
         image: "https://via.placeholder.com/150" 
+    },
+    { 
+        id: "3", 
+        name: "Pañales Bebé", 
+        category: "bebe", 
+        price: 2500, 
+        description: "Máxima absorción y cuidado para la piel.",
+        image: "https://via.placeholder.com/150" 
     }
 ];
 
-// Ruta de prueba (la que ya tenías)
+// Ruta de prueba
 app.get('/saludo', (req, res) => {
-    res.json({ mensaje: "¡Hola! El backend de FarmaWeb ya está vivo." });
+    res.json({ mensaje: "¡Hola! El backend de FarmaWeb ya está vivo y funcionando." });
 });
 
 // --- RUTA CLAVE: Esta es la que tu frontend busca ---
@@ -35,7 +43,7 @@ app.get('/api/productos', (req, res) => {
     res.json(inventario);
 });
 
-// --- AJUSTE DE PUERTO PARA RENDER ---
+// --- AJUSTE DE PUERTO PARA RENDER (Vital) ---
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor listo en el puerto ${PORT}`);
