@@ -1,4 +1,4 @@
-import { allProducts } from '../data.js';
+let allProducts = [];
 import { getProductCardHTML } from '../ui.js';
 import { loadPage } from '../router.js';
 
@@ -10,6 +10,17 @@ const categories = [
     { id: "bebe", name: "Bebé y Mamá" }, 
     { id: "primeros-auxilios", name: "Primeros Auxilios" }
 ];
+
+async function cargarProductosDesdeBackend() {
+    try {
+        const respuesta = await fetch('https://farmaweb-html.onrender.com/api/productos');
+        allProducts = await respuesta.json();
+        filterProducts('all'); 
+        console.log("Productos cargados desde Render:", allProducts);
+    } catch (error) {
+        console.error("Error cargando productos:", error);
+    }
+}
 
 export function initCatalogPage() {
     const filterButtonsContainer = document.querySelector('.filter-buttons');
@@ -79,4 +90,5 @@ export function handleSearch(event) {
     } else {
         filterProducts(document.querySelector('.filter-button.active').dataset.category, searchTerm);
     }
+
 }
