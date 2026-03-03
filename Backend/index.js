@@ -2,17 +2,41 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-// Configuraciones
 app.use(cors());
 app.use(express.json());
 
-// Nuestra primera ruta de prueba
+// --- ESTO ES LO QUE TE FALTABA: EL INVENTARIO ---
+const inventario = [
+    { 
+        id: "1", 
+        name: "Paracetamol", 
+        category: "medicamentos", 
+        price: 500, 
+        description: "Alivio efectivo para el dolor y la fiebre.",
+        image: "https://via.placeholder.com/150" 
+    },
+    { 
+        id: "2", 
+        name: "Vitamina C", 
+        category: "vitaminas", 
+        price: 1200, 
+        description: "Refuerza tu sistema inmunológico.",
+        image: "https://via.placeholder.com/150" 
+    }
+];
+
+// Ruta para saludar (la que ya tenías)
 app.get('/saludo', (req, res) => {
-    res.json({ mensaje: "¡Hola David! El backend de FarmaWeb ya está vivo y funcionando." });
+    res.json({ mensaje: "¡Hola! El backend de FarmaWeb ya está vivo." });
 });
 
-// Encender el motor
-const PORT = 3000;
+// --- RUTA CLAVE PARA TU CATÁLOGO ---
+app.get('/api/productos', (req, res) => {
+    res.json(inventario);
+});
+
+// --- CONFIGURACIÓN DE PUERTO PARA RENDER ---
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor listo en http://localhost:${PORT}`);
+    console.log(`🚀 Servidor listo en el puerto ${PORT}`);
 });
