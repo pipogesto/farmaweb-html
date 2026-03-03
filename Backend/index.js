@@ -5,7 +5,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// --- ESTO ES LO QUE TE FALTABA: EL INVENTARIO ---
+// --- ESTE ES EL INVENTARIO QUE TU CATÁLOGO NECESITA ---
 const inventario = [
     { 
         id: "1", 
@@ -25,17 +25,17 @@ const inventario = [
     }
 ];
 
-// Ruta para saludar (la que ya tenías)
+// Ruta de prueba (la que ya tenías)
 app.get('/saludo', (req, res) => {
     res.json({ mensaje: "¡Hola! El backend de FarmaWeb ya está vivo." });
 });
 
-// --- RUTA CLAVE PARA TU CATÁLOGO ---
+// --- RUTA CLAVE: Esta es la que tu frontend busca ---
 app.get('/api/productos', (req, res) => {
     res.json(inventario);
 });
 
-// --- CONFIGURACIÓN DE PUERTO PARA RENDER ---
+// --- AJUSTE DE PUERTO PARA RENDER ---
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor listo en el puerto ${PORT}`);
