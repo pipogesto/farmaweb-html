@@ -1,4 +1,4 @@
-import { API_URL } from './config.js';
+import { 'https://farmaweb-backend-iwcc.onrender.com' } from './config.js';
 
 // Intentamos obtener los productos del backend de Render
 export const getAllProducts = async () => {
@@ -17,5 +17,6 @@ export const allUsers = [
     { email: "cliente@email.com", password: "123", role: "user", name: "Juan Cliente" },
     { email: "admin@farmaplus.com", password: "admin123", role: "admin", name: "Admin FarmaPlus" }
 ];
+
 
 
